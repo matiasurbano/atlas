@@ -1,0 +1,190 @@
+<html>
+<head>
+	<title>ATLAS</title>
+	<meta charset="utf-8" />
+
+	<link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.css" />
+
+		<!--link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+		<script src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+		<script src="http://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script-->
+
+			<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+			<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+			
+			<!-- Latest compiled and minified CSS -->
+			<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+
+			<!-- Optional theme -->
+			<link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap-theme.min.css">
+			<link rel="stylesheet" href="bower_components/c3/c3.min.css">
+
+			<!-- Latest compiled and minified JavaScript -->
+			<script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+			<script src="bower_components/lodash/lodash.min.js"></script>
+			<script src="bower_components/d3/d3.min.js"></script>
+			<script src="bower_components/c3/c3.min.js"></script>
+
+			<link rel="stylesheet" type="text/css" href="css/mapa.css">
+		</head>
+		<body>
+
+			<!-- Panel de la Izquierda -->
+			<nav id="panel-left" class="panel panel-left">
+				<div class="panel-content">
+					<div class="info options">
+						<h4>Seleccione</h4>
+						<div class="form-group">
+							<select id="cbo_areas" name="opciones" class="form-control">
+								<option value="Partidos">Partidos</option>
+								<option value="Zonas">Zonas</option>
+								<option value="Cordones">Cordones</option>
+								<option value="Cuencas">Cuencas</option>
+							</select>
+						</div>
+						<div id='lst_areas' class='select-area'>
+						</div>
+					</div>
+					<br/>
+					<div class="info options">
+						<h4>Barrios</h4>
+						<div id='lst_barrios' class='select-area'>
+						</div>
+					</div>
+
+				</div>
+			</nav>
+
+			<!-- Panel de la Derecha -->
+			<nav id="panel-right" class="panel panel-right">
+				
+				<div class="panel-content">
+
+				   <ul class="nav nav-tabs" id="myTab">
+				      <li class="active"><a href="#poblacion">Poblaci&oacute;n</a></li>
+				      <li><a href="#vivienda">Vivienda</a></li>
+				      <li><a href="#pea">PEA</a></li>
+				      <li><a href="#pbg">PBG</a></li>
+				   </ul>
+				   <div class="tab-content container">
+				      <div class="tab-pane active" id="poblacion">
+				      		<h4>Poblaci&oacute;n</h4>
+							<div id="poblacionVBars"></div>
+
+				      		<h4>Masculinidad</h4>
+							<div id="poblacionPie"></div>
+
+				      		<h4>Densidad</h4>
+							<div id="poblacionHBars"></div>
+				      </div>
+				      <div class="tab-pane" id="vivienda">
+				      		<h4>Tipo de vivienda</h4>
+							<div id="viviendaHBars"></div>				      		
+
+				      		<h4>Calidad de materiales</h4>
+							<div id="viviendaVBars"></div>
+
+				      		<h4>Conexión a servicios básicos</h4>
+							<div id="viviendaPie"></div>
+				      </div>
+				      <div class="tab-pane" id="pea">
+				      		<h4>Tipo de poblacion</h4>
+							<div id="peaVBars"></div>
+
+				      		<h4>Ocupacion</h4>
+							<div id="peaPie"></div>
+
+				      		<h4>Distribucion</h4>
+							<div id="peaHBars"></div>				      		
+				      </div>
+				      <div class="tab-pane" id="pbg">
+				      		<h4>Tipo de Produccion</h4>
+							<div id="pbgVBars"></div>
+
+				      		<h4>Bienes</h4>
+							<div id="pbgHBars1"></div>				      		
+
+				      		<h4>Servicios</h4>
+							<div id="pbgHBars2"></div>				      		
+
+				      </div>
+
+				   </div>
+			
+				</div>
+			</nav>
+
+			<!-- Titulo y Botones -->
+			<div class="navbar navbar-inverse navbar-fixed-top">
+				<div class="row">
+					<div class="col-xs-3 col-md-1 col-lg-1 button-left">
+						<button type="button" id="btn-filters" class="btn btn-default">
+							<span class="glyphicon glyphicon-menu-hamburger" aria-hidden="true"></span>
+						</button>
+					</div>
+					<div class="col-xs-6 col-md-10 col-lg-10 title">
+						Proyecto Atlas
+					</div>
+					<div class="col-xs-3 col-md-1 col-lg-1 button-right">
+						<button type="button" id="btn-graphics" class="btn btn-default">
+							<span class="glyphicon glyphicon-stats" aria-hidden="true"></span>
+						</button>	        
+					</div>
+				</div>
+
+
+			</div>
+
+
+			<!-- Mapa -->
+			<div data-role="page" id="pageone" class="map-container">
+				<div data-role="main" class="ui-content">
+					<div id="map"></div>
+				</div>
+			</div>
+
+		</boody>
+		<script src="http://cdn.leafletjs.com/leaflet-0.7.5/leaflet.js"></script>
+		<script type="text/javascript" src="js/EventBus.js"></script>
+		<script type="text/javascript" src="js/data.js"></script>
+		<script type="text/javascript" src="js/data_map.js"></script>
+		<script type="text/javascript" src="js/graph.js"></script>
+		<script type="text/javascript" src="js/app.js"></script>
+
+		<script>
+			$(document).ready(function(){												
+				
+				$('#btn-filters').on('click',function(e){
+					e.preventDefault();
+					// $('#panel-right').removeClass('panel-right-expanded');
+					$('#panel-left').toggleClass('panel-left-expanded');
+				});
+				$('#panel-left-close').on('click',function(e){
+					e.preventDefault();
+					$('#panel-left').removeClass('panel-left-expanded');
+				});
+
+				$('#btn-graphics').on('click',function(e){
+					e.preventDefault();
+					// $('#panel-left').removeClass('panel-left-expanded');
+					$('#panel-right').toggleClass('panel-right-expanded');
+				});
+				$('#panel-right-close').on('click',function(e){
+					e.preventDefault();
+					$('#panel-right').removeClass('panel-right-expanded');
+				});
+
+				$('#cbo_areas').on('change',function(e){
+					e.preventDefault();
+					var tipo = e.target.options[e.target.selectedIndex].value;
+					setAreasSelect(tipo);
+				});
+
+				$('#myTab a').click(function (e) {
+				  e.preventDefault()
+				  $(this).tab('show')
+				})
+
+			});
+</script>	
+</html>

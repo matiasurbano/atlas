@@ -1,0 +1,21 @@
+{
+  "name": "ab-gestion",
+  "main": "index.html",
+  "version": "0.0.1",
+  "description": "Administracion de Bus",
+  "moduleType": [
+    "globals"
+  ],
+  "keywords": [
+    "angular"
+  ],
+  "authors": [
+    "lea"
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "bootstrap": "~3.3.5",
+    "lodash": "~3.10.1",
+    "c3": "~0.4.10"
+  }
+}

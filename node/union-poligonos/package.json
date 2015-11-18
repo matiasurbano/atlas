@@ -1,0 +1,8 @@
+{
+    "name": "union-maps",
+    "version": "1.0.0",
+    "dependencies": {
+			    "lodash-node": "^2.4.1",
+			    "turf-union": "~1.0.2"
+				}
+}

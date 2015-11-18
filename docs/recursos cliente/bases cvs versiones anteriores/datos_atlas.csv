@@ -1,0 +1,57 @@
+tipo_region,codigo,region,cordon,conurbano,cuencas,anio,superficie,poblacion,creacion,hombres,mujeres,viviendas_precarias,viviendas,hogares,hogares_nbi,jefes_hogar,poblacion_14_anios,pea,pea_ocupada,pea_desocupada,no_pea,pbg_bienes,pbg_servicios,pbg_a,pbg_b,pbg_c,pbg_d,pbg_e,pbg_f,pbg_h,pbg_i,pbg_j,pbg_k,pbg_l,pbg_m,pbg_n,pbg_o,pbg_p;
+partido,35,Avellaneda,1,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,434,LanC:s,1,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,490,Lomas de Zamora,1,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_1,La Matanza (cordon I),1,oeste,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,568,MorC3n,1,oeste,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,840,Tres de Febrero,1,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,371,General San MartC-n,1,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,861,Vicente LC3pez,1,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,756,San Isidro,1,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,658,Quilmes,2,sur,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,91,Berazategui,2,sur,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,274,Florencio Varela,2,sur,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,260,Esteban EcheverrC-a,2,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,270,Ezeiza,2,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,560,Moreno,2,oeste,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,539,Merlo,2,oeste,Matanza-riachuelo;reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+partido,515,Malvinas Argentinas,2,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,408,Hurlingham,2,oeste,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,410,ItuzaingC3,2,oeste,Matanza-riachuelo;reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+partido,805,Tigre,2,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,749,San Fernando,2,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,412,JosC) C. Paz,2,oeste,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,760,San Miguel,2,norte,reconquista,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_2,La Matanza (cordon II),2,oeste,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,28,Almirante Brown,2,sur,matanza-riachuelo,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_3,La Matanza (cordon III),3,oeste,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+provincia,01,Buenos Aires,0,,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+pais,001,Argentina,0,,,2001,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,35,Avellaneda,1,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,434,LanC:s,1,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,490,Lomas de Zamora,1,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_1,La Matanza (cordon I),1,oeste,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,568,MorC3n,1,oeste,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,840,Tres de Febrero,1,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,371,General San MartC-n,1,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,861,Vicente LC3pez,1,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,756,San Isidro,1,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,658,Quilmes,2,sur,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,91,Berazategui,2,sur,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,274,Florencio Varela,2,sur,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,260,Esteban EcheverrC-a,2,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,270,Ezeiza,2,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,560,Moreno,2,oeste,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,539,Merlo,2,oeste,Matanza-riachuelo;reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+partido,515,Malvinas Argentinas,2,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,408,Hurlingham,2,oeste,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,410,ItuzaingC3,2,oeste,Matanza-riachuelo;reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+partido,805,Tigre,2,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,749,San Fernando,2,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,412,JosC) C. Paz,2,oeste,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,760,San Miguel,2,norte,reconquista,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_2,La Matanza (cordon II),2,oeste,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,28,Almirante Brown,2,sur,matanza-riachuelo,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+partido,427_3,La Matanza (cordon III),3,oeste,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+provincia,01,Buenos Aires,0,,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
+pais,001,Argentina,0,,,2010,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,;
