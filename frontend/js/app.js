@@ -40,7 +40,19 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		return this._div;
 	};
 
+
 	info.update = function (props) {
+		var dataSelected = getDataSelected(props);
+		var htmlData = "";
+
+		_.forEach(dataSelected, function(data){
+			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
+		});
+
+		this._div.innerHTML = '<h4>Datos de Seleccion</h4>' +  
+				(props ? htmlData :  'Posicionese sobre un area marcada' )
+
+/*
 		this._div.innerHTML = '<h4>Datos de Seleccion</h4>' +  (props ?
 			"Tipo: " + '<b>' + (props.tipo || props.type || "") + '</b><br/>' +
 			"Nombre: " + '<b>' + (props.barrio || props.name || "") + '</b><br/>' +
@@ -48,14 +60,81 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			"Viviendas: "	+ (props.viv || "Sin espefificar") + '<br/>' +
 			"Habitantes: "	+ (props.hab || "Sin espefificar")
 			: 'Posicionese sobre un area marcada');
-
+*/
 	};
+
+
+	getTabSelected = function() {
+		return $('.nav-tabs .active').text();
+	}
+
+	getMapSelected = function(props) {
+		return (props["barrio"] !== undefined ? "Barrio" : props.type);
+	}
+
+	getDataSelected = function(props) {
+
+		if (props === undefined) return [];
+
+		var tabSelected = getTabSelected();
+
+		if (getMapSelected(props) === "Barrio")
+			return [
+						{name : "Tipo", value : props.tipo},
+						{name : "Barrio", value : props.barrio},
+						{name : "Hogares", value : props.hog},
+						{name : "Viviendas", value : props.viv},
+						{name : "Habitantes", value : props.hab}
+					];
+		if (tabSelected === 'Población')
+			return [
+						{name : "Tipo de Dato", value : "Población"},
+						{name : "Nombre", value : props["name"]},
+						{name : "Censo 2001", value : props["poblacion-2001"]},
+						{name : "Censo 2010", value : props["poblacion-2010"]},
+						{name : "Densidad", value : props["densidad"]},
+						{name : "Masculinidad", value : props["indice-masculinidad"]}
+					];
+		else if (tabSelected === 'Vivienda')
+			return [
+						{name : "Tipo de Dato", value : "Vivienda"},
+						{name : "Nombre", value : props["name"]},
+						{name : "Casas", value : Number(props["vivienda-casa-a"]) + Number(props["vivienda-casa-b"]) + Number(props["vivienda-casa-ni"])},
+						{name : "Casillas", value : props["vivienda-casilla"]},
+						{name : "Ranchos", value : props["vivienda-rancho"]},
+						{name : "Deptos", value : props["vivienda-departamento"]},
+						{name : "Inquilinato", value : props["vivienda-inquilinato"]},
+						{name : "Hotel", value : props["vivienda-hotel"]},
+						{name : "Local", value : props["vivienda-local"]},
+						{name : "Movil", value : props["vivienda-movil"]},
+						{name : "Calle", value : props["vivienda-calle"]}
+					];
+		else if (tabSelected === 'PEA')
+			return [
+						{name : "Tipo de Datos", value : "PEA"},
+						{name : "Nombre", value : props["name"]},
+						{name : "Ocupada", value : props["pea-ocupada"]},
+						{name : "Desocupada", value : props["pea-desocupada"]},
+						{name : "Inactiva", value : props["no-pea"]}
+					];
+		else if (tabSelected === 'PBG')
+			return [
+						{name : "Tipo de Dato", value : "PBG"},
+						{name : "Nombre", value : props["name"]},
+						{name : "Bienes", value : Number(props["pbg-a"]) + Number(props["pbg-b"]) + Number(props["pbg-c"]) + Number(props["pbg-d"]) + Number(props["pbg-e"]) + Number(props["pbg-f"])},
+						{name : "Servicios", value : Number(props["pbg-g"]) + Number(props["pbg-h"]) + Number(props["pbg-i"]) + Number(props["pbg-j"]) + Number(props["pbg-k"]) + Number(props["pbg-l"]) + Number(props["pbg-m"]) + Number(props["pbg-n"]) + Number(props["pbg-o"]) + Number(props["pbg-p"])}
+					];
+		else 
+			return [];
+
+	}
 
 	info.addTo(map);
 
 
 	// get color depending on population density value
 	function getColor(d) {
+		/*
 		return d > 1000 ? '#800026' :
 		       d > 500  ? '#BD0026' :
 		       d > 200  ? '#E31A1C' :
@@ -64,6 +143,14 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		       d > 20   ? '#FEB24C' :
 		       d > 10   ? '#FED976' :
 		                  '#FFEDA0';
+		                  */
+		var area = getAreaSelected();
+		return area === 'Partidos'  ? '#800026' :
+		       area === 'Zonas' 	? '#BD0026' :
+		       area === 'Cordones' 	? '#E31A1C' :
+		       area === 'Cuencas' 	? '#FC4E2A' :
+		                  			  '#FFEDA0';
+			
 	}
 
 	function styleA(feature) {
@@ -109,8 +196,14 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 	}
 
 	// restaura el color de la region sobre la cual pierde el foco
-	function resetHighlight(e) {
+	function resetHighlightA(e) {
 		geojsonA.resetStyle(e.target);
+		info.update();
+	}
+
+	// restaura el color de la region sobre la cual pierde el foco
+	function resetHighlightB(e) {
+		geojsonB.resetStyle(e.target);
 		info.update();
 	}
 
@@ -120,10 +213,19 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 	}
 
 	// setea los evntos sobre el mapa
-	function onEachFeature(feature, layer) {
+	function onEachFeatureA(feature, layer) {
 		layer.on({
 			mouseover: highlightFeature,
-			mouseout: resetHighlight,
+			mouseout: resetHighlightA,
+			click: zoomToFeature
+		});
+	}
+
+	// setea los evntos sobre el mapa
+	function onEachFeatureB(feature, layer) {
+		layer.on({
+			mouseover: highlightFeature,
+			mouseout: resetHighlightB,
 			click: zoomToFeature
 		});
 	}
@@ -161,12 +263,16 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	// legend.addTo(map);
 
+	function getAreaSelected() {
+		return $("#cbo_areas")[0].value;
+	}
+
 
 	function getAreasSelected() {
 		// no se porque carajo retorna un array
 		if ($("#cbo_areas")[0].value === undefined) return;
 
-		return _.clone(areas[$("#cbo_areas")[0].value]);
+		return _.clone(areas[getAreaSelected()]);
 	}
 
 
@@ -204,12 +310,12 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 		geojsonA = L.geoJson(a, {
 			style: styleA,
-			onEachFeature: onEachFeature
+			onEachFeature: onEachFeatureA
 		}).addTo(map);
 
 		geojsonB = L.geoJson(b, {
 			style: styleB,
-			onEachFeature: onEachFeature
+			onEachFeature: onEachFeatureB
 		}).addTo(map);
 
 	}
