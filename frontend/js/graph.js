@@ -1,7 +1,7 @@
 var graphPoblacion, graphMasculinidad, graphDensidad // graficos c3
 var graphViviendaTipo, graphViviendaCalMat, graphViviendaServBas
 var graphPeaTipo, graphPeaOcupacion, graphPeaDistribucion
-var graphpbgTipo, graphpbgBienes, graphpbgServicios
+var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraph(data) {
 		// poblacion
@@ -62,13 +62,21 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 	}
 
 	function setDataGraphDensidad(data) {
-		var titles = _.map(data.features, function(area) { 
-				return area.properties.name
+
+		if (getAreaSelected() === 'Partidos')	// agrupo por la cantidad
+			data = groupOthers(data.features, 'densidad,poblacion-2010,poblacion-2001,superficie', 6);
+		else
+			data = data.features;
+
+		//data = data.features;
+
+		var titles = _.map(data, function(area) { 
+				return area.properties['name'];
 			});
-		var densidad_2001 = _.map(data.features, function(area) { 
+		var densidad_2001 = _.map(data, function(area) { 
 				return (Number(area.properties['poblacion-2001']) / Number(area.properties['superficie'])).toFixed(2);
 			});
-		var densidad_2010 = _.map(data.features, function(area) { 
+		var densidad_2010 = _.map(data, function(area) { 
 				return (Number(area.properties['poblacion-2010']) / Number(area.properties['superficie'])).toFixed(2);
 			});
 
@@ -82,12 +90,63 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 			}
 		);
 /*
+
+		var titles = _.map(data.features, function(area) { 
+				return area.properties.name
+			});
+		var densidad_2001 = _.map(data.features, function(area) { 
+				return (Number(area.properties['poblacion-2001']) / Number(area.properties['superficie']) / 1000).toFixed(3);
+			});
+		var densidad_2010 = _.map(data.features, function(area) { 
+				return (Number(area.properties['poblacion-2010']) / Number(area.properties['superficie']) / 1000).toFixed(3);
+			});
+
+		graphDensidad.load(
+			{
 				columns: [
-				['x', 'San martín', 'Morón', 'La Matanza', 'Avellaneda', 'Ezeiza', 'Merlo'],
-				['2001', 30, 200, 100, 400, 150, 250],
-				['2010', 50, 20, 10, 40, 15, 25]
-				],
+							['x'].concat(titles),
+							['2001'].concat(densidad_2001),
+							['2010'].concat(densidad_2010)
+						]
+			}
+		);
 */
+
+
+	}
+
+	function groupOthers(data, fields, nRecords) {
+		var data = _.clone(data);
+		var dataGrouped = [];
+		var dataSum = [];
+		var record = {properties: []};
+
+		fields = fields.split(",");
+
+		// ordeno por el primer campo
+		dataSort = _.sortBy(data, function(x) { 
+								return -1 * Number(x.properties[fields[0]]);
+							});
+
+		// tomo los nRecords mas grandes
+		dataGrouped = _.take(dataSort, nRecords);
+
+		// tomo los restantes para sumar
+		dataSum = _.slice(dataSort, nRecords);	
+
+		// acumulo los fields pasados como parametros
+		_.forEach(fields, function (x) {
+					record['properties'][x] = _.sum(dataSum, function (y) {
+							return y.properties[x];
+						})
+					}
+				);
+
+		record.properties['name'] = 'Otros';
+
+		dataGrouped.push(record);
+		return dataGrouped;
+
 	}
 
 	function setDataGraphViviendaTipo(data) {
@@ -104,7 +163,7 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 		graphViviendaTipo.load(
 			{
 				columns: [
-					['x', 'Casa', 'Rancho', 'Casilla', 'Departamento', 'Pieza en Inquilinato', 'Pieza en hotel', 'Local', 'Movil'],
+					['x', 'Casa', 'Rancho', 'Casilla', 'Departamento', 'Pieza en Inq.', 'Pieza en hotel', 'Local', 'Movil'],
 					['Cantidad', casa, rancho, casilla, departamento, inquilinato, hotel, local, movil]
 				],
 			}
@@ -175,7 +234,7 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 			{
 				columns: [
 					['x', 'Ocupada', 'Desocupada', 'Inactiva'],
-					['Cantidad', ocupada, desocupada, inactiva]
+					['Cantidad', Number(ocupada), Number(desocupada), Number(inactiva)]
 				],
 			}
 		);
@@ -201,21 +260,29 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 		var pbg_d = getAreaValue(data,'pbg-d', 'sum');
 		var pbg_e = getAreaValue(data,'pbg-e', 'sum');
 		var pbg_f = getAreaValue(data,'pbg-f', 'sum');
-
-		graphpbgBienes.load(
-			{
-				columns: [
-					[
-							'x',
+/*
 							"Agricultura, ganadería, caza y silvicultura",
 							"Pesca explotación de criaderos de peces y granjas piscícolas y servicios conexos",
 							"Explotación de minas y canteras",
 							"Industria Manufacturera",
 							"Electricidad, gas y agua",
 							"Construcción"
+*/
+
+		graphPbgBienes.load(
+			{
+				columns: [
+					[
+							'x',
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F"
 						],
 					['Cantidad', pbg_a, pbg_b, pbg_c, pbg_d, pbg_e, pbg_f]
-				],
+				]				
 			}
 		);
 	}
@@ -238,16 +305,16 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				columns: [
 					[
 							'x',
-							"Comercio al por mayor, al por menor, reparación de vehículos automotores, motocicletas, efectos personales y enseres domésticos", 
-							"Servicios de hotelería y restaurantes", 
-							"Servicio de transporte, de almacenamiento y de comunicaciones", 
-							"Intermediación financiera y otros servicios financieros", 
-							"Servicios inmobiliarios, empresariales  y de alquiler", 
-							"Administración pública, defensa y seguridad social obligatoria", 
-							"Enseñanza", 
-							"Servicios sociales y de salud", 
-							"Servicios comunitarios, sociales y personales N.C.P.", 
-							"Hogares privados con servicio doméstico"
+							"G", 
+							"H", 
+							"I", 
+							"J", 
+							"K", 
+							"L", 
+							"M", 
+							"N", 
+							"O", 
+							"P"
 						],
 					['Cantidad', pbg_g, pbg_h, pbg_i, pbg_j, pbg_k, pbg_l, pbg_m, pbg_n, pbg_o, pbg_p]
 				],
@@ -256,15 +323,17 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 	}
 
 
-
-	function getAreaValue(data, propName, op) {
+	function getAreaValue(data, propName, op, fn) {
 		var names = propName.split(',');
+		
+		if (fn === undefined)
+			fn = function (x) {return x;}
 
 		if (data === undefined) return 0;
 
 		var value = _.sum(data.features, function(area) {
 						return _.sum(names, function(name) { 
-							return Number(area.properties[name]); 
+							return fn(Number(area.properties[name])); 
 						});
 					});
 
@@ -337,9 +406,17 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				type: 'bar'
 			},
 			axis: {
-				x: {
-		            type: 'category' // this needed to load string x value
-		          },
+					x: {
+			            type: 'category' // this needed to load string x value
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 2000, 4000, 6000, 8000, 10000]
+				                //,
+				                //format: function (x) { return Math.round(x / 1000000) + "M"; }
+			            	}		            
+		            },
 		          rotated: true
 		        },
 			color: {
@@ -362,13 +439,27 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				type: 'bar'
 			},
 			axis: {
-				x: {
-		            type: 'category' // this needed to load string x value
-		          },
+					x: {
+			            type: 'category' // this needed to load string x value
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 1000000, 2000000, 3000000],
+				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+			            	}		            
+		            },
 		          rotated: true
 		        },
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
+		    tooltip: {
+		        format: {
+					value: function (value, ratio, id) {
+					    return value;
+		            }
+		        }
 		    }
 	    });
 
@@ -477,13 +568,27 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				type: 'bar'
 			},
 			axis: {
-				x: {
-		            type: 'category' // this needed to load string x value
-		          },
+					x: {
+			            type: 'category' // this needed to load string x value
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 1000000, 2000000, 3000000, 4000000, 5000000],
+				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+			            	}		            
+		            },		          
 		          rotated: true
 		        },
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
+		    tooltip: {
+		        format: {
+					value: function (value, ratio, id) {
+					    return value;
+		            }
+		        }
 		    }
 	    });
 
@@ -512,7 +617,7 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 		});
 
 
-		graphpbgBienes = c3.generate({
+		graphPbgBienes = c3.generate({
 			bindto: '#pbgHBars1',
 		    size: {
 		        height: 150,
@@ -523,25 +628,48 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				columns: [
 					[
 							'x',
-							"Agricultura, ganadería, caza y silvicultura",
-							"Pesca explotación de criaderos de peces y granjas piscícolas y servicios conexos",
-							"Explotación de minas y canteras",
-							"Industria Manufacturera",
-							"Electricidad, gas y agua",
-							"Construcción"
+							"A",
+							"B",
+							"C",
+							"D",
+							"E",
+							"F"
 						],
 					['Cantidad', 50, 20, 10, 60, 52, 75]
 				],
 				type: 'bar'
 			},
 			axis: {
-				x: {
-		            type: 'category' // this needed to load string x value
-		          },
-		          rotated: true
+					x: {
+			            type: 'category' // this needed to load string x value
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 5000000, 10000000, 15000000, 20000000, 25000000],
+				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+			            	}		            
+		            },
+
+		        	rotated: true
 		        },
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	return d === 0 ? "Agricultura, ganadería,<br/>caza y silvicultura" :
+							   d === 1 ? "Pesca explotación de criaderos<br/>de peces y granjas piscícolas<br/>y servicios conexos" :
+							   d === 2 ? "Explotación de minas<br/>y canteras" :
+							   d === 3 ? "Industria Manufacturera" :
+							   d === 4 ? "Electricidad, gas y agua" :
+							   d === 5 ? "Construcción" : "";
+					},
+					value: function (value, ratio, id) {
+					    return value;
+		            }
+		        }
 		    }
 	    });
 
@@ -557,29 +685,55 @@ var graphpbgTipo, graphpbgBienes, graphpbgServicios
 				columns: [
 					[
 							'x',
-							"Comercio al por mayor, al por menor, reparación de vehículos automotores, motocicletas, efectos personales y enseres domésticos", 
-							"Servicios de hotelería y restaurantes", 
-							"Servicio de transporte, de almacenamiento y de comunicaciones", 
-							"Intermediación financiera y otros servicios financieros", 
-							"Servicios inmobiliarios, empresariales  y de alquiler", 
-							"Administración pública, defensa y seguridad social obligatoria", 
-							"Enseñanza", 
-							"Servicios sociales y de salud", 
-							"Servicios comunitarios, sociales y personales N.C.P.", 
-							"Hogares privados con servicio doméstico"
+							"G", 
+							"H", 
+							"I", 
+							"J", 
+							"K", 
+							"L", 
+							"M", 
+							"N", 
+							"O", 
+							"P"
 						],
 					['Cantidad', 50, 20, 10, 60, 52, 75, 8, 35, 42, 66]
 				],
 				type: 'bar'
 			},
 			axis: {
-				x: {
-		            type: 'category' // this needed to load string x value
-		          },
-		          rotated: true
+					x: {
+			            type: 'category' // this needed to load string x value
+			          	},
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                //values: [0, 2500000, 5000000, 7500000, 10000000],
+				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+			            	}		            
+			            },
+		          	rotated: true
 		        },
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	return d === 0 ? "Comercio al por mayor, al por menor, <br/>reparación de vehículos automotores, <br/>motocicletas, efectos personales <br/>y enseres domésticos" :
+								d === 1 ? "Servicios de hotelería<br/>y restaurantes" :
+								d === 2 ? "Servicio de transporte,<br/>de almacenamiento<br/>y de comunicaciones" :
+								d === 3 ? "Intermediación financiera<br/>y otros servicios financieros" :
+								d === 4 ? "Servicios inmobiliarios,<br/>empresariales  y de alquiler" :
+								d === 5 ? "Administración pública, defensa<br/>y seguridad social obligatoria" :
+								d === 6 ? "Enseñanza" :
+								d === 7 ? "Servicios sociales<br/>y de salud" :
+								d === 8 ? "Servicios comunitarios,<br/>sociales y personales N.C.P." :
+								d === 9 ? "Hogares privados con<br/>servicio doméstico" : "";
+					},
+					value: function (value, ratio, id) {
+					    return value;
+		            }				                
+		        }
 		    }
 	    });
 
