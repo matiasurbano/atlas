@@ -1,4 +1,6 @@
 html, body {
+   font-family: "Lato",Helvetica,Arial,sans-serif;
+   font-size: 12px;
    padding-top: 25px;
    margin: 0px;
 }
@@ -6,7 +8,6 @@ html, body {
 #map { 
   height: 100%; 
   width: 100%;
-  /*margin-top: 50px;*/
 }
 
 .button-left {
@@ -21,26 +22,27 @@ html, body {
 }
 
 .title {
+  font-size: 25px;
   text-align: center;
-  font-size: 28px !important;
   color: #FFFFFF;
   padding-top: 5px;
   text-shadow: 1px 2px #403C3C;
 }
 
+.map-padding-left {
+    padding-left: 200px !important;
+}
+
 .map-container {
-    padding-right: 2px;
+    padding-right: 320px;
     padding-left: 2px;
-    /*padding-top: 50px;*/
     padding-bottom: 2px;
     position: relative;
 }
 
 
 .info {
-    /*display: none;*/
     padding: 6px 8px;
-    font: 14px/16px Arial, Helvetica, sans-serif;
     background: white;
     background: rgba(255,255,255,0.8);
     box-shadow: 0 0 15px rgba(0,0,0,0.2);
@@ -66,9 +68,7 @@ html, body {
 .options {
     line-height: 18px;
     color: #555;
-/*    width: 200px;
-    height: 290px;*/
-    //background: white;
+    background: white;
 }
 
 .select-area {
@@ -92,7 +92,6 @@ html, body {
   height: 100%;
   overflow: auto;
   position: fixed;
-  font-size: 15px;
   top: 50px;
   border: 0px;
   z-index: 2000;
@@ -123,8 +122,8 @@ html, body {
 }
 
 .panel-left {
-  width: 20em;
-  left: -20em;
+  width: 200px;
+  left: -200px;
   transition: left 0.3s ease-in-out 0s;
   -webkit-transition: left 0.3s ease-in-out 0s;
   -moz-transition: left 0.3s ease-in-out 0s;
@@ -140,16 +139,14 @@ html, body {
 }
 
 .panel-left-close {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 300;
-  font-size: 15px;
   padding-left: 10px;
 }
 
 
 .panel-right {
-  width: 25em;
-  right: -25em;
+  width:  320px;
+  right: -320px;
   transition: right 0.3s ease-in-out 0s;
   -webkit-transition: right 0.3s ease-in-out 0s;
   -moz-transition: right 0.3s ease-in-out 0s;
@@ -165,9 +162,7 @@ html, body {
 }
 
 .panel-right-close {
-  font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
   font-weight: 300;
-  font-size: 15px;
   padding-right: 10px;
 }
 
@@ -185,13 +180,66 @@ html, body {
 
 
 .navbar-inverse {
-
-/* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#a7c7dc+0,5682a3+100 */
-background: #a7c7dc; /* Old browsers */
-background: -moz-radial-gradient(center, ellipse cover,  #a7c7dc 0%, #5682a3 100%); /* FF3.6-15 */
-background: -webkit-radial-gradient(center, ellipse cover,  #a7c7dc 0%,#5682a3 100%); /* Chrome10-25,Safari5.1-6 */
-background: radial-gradient(ellipse at center,  #a7c7dc 0%,#5682a3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#5682a3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
-
-    background-repeat: repeat-x;
+  background: #a7c7dc;
+  background: -moz-radial-gradient(center, ellipse cover,  #a7c7dc 0%, #5682a3 100%); /* FF3.6-15 */
+  background: -webkit-radial-gradient(center, ellipse cover,  #a7c7dc 0%,#5682a3 100%); /* Chrome10-25,Safari5.1-6 */
+  background: radial-gradient(ellipse at center,  #a7c7dc 0%,#5682a3 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a7c7dc', endColorstr='#5682a3',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+  background-repeat: repeat-x;
 }
+
+.tooltip {
+    position: inherit;
+    z-index: 1070;
+    display: block;
+    font-family: inherit;
+    font-size: none;
+    font-style: inherit;
+    font-weight: inherit;
+    line-height: inherit;
+    text-align: left;
+    text-align: start;
+    text-decoration: none;
+    text-shadow: none;
+    text-transform: none;
+    letter-spacing: normal;
+    word-break: normal;
+    word-spacing: normal;
+    word-wrap: normal;
+    white-space: normal;
+    filter: alpha(opacity=0);
+    opacity: inherit;
+    line-break: auto;
+}
+
+
+#help {
+  position: absolute;
+  bottom: 5px;
+  left: 10px;
+}
+
+.modal {
+  top: 20px;
+  width: 550px;
+}
+
+.blocker {
+  z-index: 999999 !important;
+}
+
+#ayuda-content {
+  height: 500px;
+  overflow-y: scroll;
+  width: 500px;
+}
+
+#ayuda-form {
+  height: 550px;
+  width: 550px;
+}
+
+#ayuda-content p { 
+  text-align: justify;
+}
+

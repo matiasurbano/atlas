@@ -351,7 +351,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#poblacionVBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        columns: [
@@ -375,7 +375,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#poblacionPie',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        // iris data from R
@@ -394,7 +394,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#poblacionHBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 			data: {
 				x : 'x',
@@ -428,7 +428,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#viviendaHBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 			data: {
 				x : 'x',
@@ -467,7 +467,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#viviendaVBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        columns: [
@@ -494,7 +494,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#viviendaPie',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        // iris data from R
@@ -514,7 +514,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#peaVBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        columns: [
@@ -538,7 +538,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#peaPie',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        // iris data from R
@@ -557,7 +557,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#peaHBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 			data: {
 				x : 'x',
@@ -596,7 +596,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#pbgVBars',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 		    data: {
 		        columns: [
@@ -621,7 +621,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#pbgHBars1',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 			data: {
 				x : 'x',
@@ -678,7 +678,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			bindto: '#pbgHBars2',
 		    size: {
 		        height: 150,
-		        width: 300
+		        width: 250
 		    },
 			data: {
 				x : 'x',
