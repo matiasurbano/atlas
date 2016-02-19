@@ -22,7 +22,7 @@ var geojsonB;	// Geojson de Barrio
 
 var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
-	L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6IjZjNmRjNzk3ZmE2MTcwOTEwMGY0MzU3YjUzOWFmNWZhIn0.Y8bhBaUMqFiPrDRW9hieoQ', {
+	L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {
 		maxZoom: 29,
 		attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, ' +
 			'<a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' +
@@ -32,7 +32,9 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 
 	// control that shows state info on hover
-	var info = L.control();
+	var info = L.control({
+		position:'bottomright'
+	});
 
 	info.onAdd = function (map) {
 		this._div = L.DomUtil.create('div', 'info');
@@ -49,18 +51,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
 		});
 
-		this._div.innerHTML = '<h4>Datos de Seleccion</h4>' +  
-				(props ? htmlData :  'Posicionese sobre un area marcada' )
-
-/*
-		this._div.innerHTML = '<h4>Datos de Seleccion</h4>' +  (props ?
-			"Tipo: " + '<b>' + (props.tipo || props.type || "") + '</b><br/>' +
-			"Nombre: " + '<b>' + (props.barrio || props.name || "") + '</b><br/>' +
-			"Hogares: "	+ (props.hog || "Sin espefificar") + '<br/>' +
-			"Viviendas: "	+ (props.viv || "Sin espefificar") + '<br/>' +
-			"Habitantes: "	+ (props.hab || "Sin espefificar")
-			: 'Posicionese sobre un area marcada');
-*/
+		this._div.innerHTML = '<h5>Utilizá el menú de la izquierda y</br> seleccioná el área que deseas consultar</h5>' +  
+				(props ? htmlData :  '' )
 	};
 
 
@@ -325,8 +317,12 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		var name_field = name || "name";
 
 		var html = "<div class='checkbox'>" +
-					"	<label><input id='area_todos' type='checkbox' value='Todos' checked onclick='areasDisabled();'>Todos</label>" +
+					"	<label><input id='area_todos' type='checkbox' value='Todos' checked onclick='areasDisabled("+ '"todos"' +");'>Todos</label>" +
 					"</div>";
+
+		html += "<div class='checkbox'>" +
+							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
+							"</div>";
 
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
@@ -361,21 +357,33 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		});
 	}
 
-	function areasDisabled() {
+	function areasDisabled(option) {
 		var allAreas = getAreasSelected().features;
 		var todos_check = $('#area_todos')[0].checked;
 
+		if(option === 'todos')
+			$('#area_ninguno')[0].checked = false;
+		else if(option === 'ninguno')
+			$('#area_todos')[0].checked = false;
+
+		todosCheck = $('#area_todos')[0].checked;
+		ningunoCheck = $('#area_ninguno')[0].checked;
+
 		for (var i = 0; i < allAreas.length; i++) {
 			// no se porque carajo me lo toma como un array de controles...
-			$('#area_' + allAreas[i].properties.id)[0].disabled = todos_check;
+			$('#area_' + allAreas[i].properties.id)[0].disabled = (todosCheck || ningunoCheck);
 
-			if (todos_check)
+			if (todosCheck)
 				$('#area_' + allAreas[i].properties.id)[0].checked = true;
+			else if (ningunoCheck)
+				$('#area_' + allAreas[i].properties.id)[0].checked = false;
 		}
 
  		// seteo las areas seleccionadas
  		if (todos_check)
 			infoAreas.features = allAreas;
+		else if (ningunoCheck)
+			infoAreas.features = [];
 
 		// seteo las areas en el mapa
 		drawMap();
