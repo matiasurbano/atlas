@@ -57,7 +57,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 
 	getTabSelected = function() {
-		return $('.nav-tabs .active').text();
+		return $('.nav-tabs .active').text().trim();
 	}
 
 	getMapSelected = function(props) {
@@ -359,7 +359,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	function areasDisabled(option) {
 		var allAreas = getAreasSelected().features;
-		var todos_check = $('#area_todos')[0].checked;
+		var todosCheck = false;
+		var ningunoCheck = false;
 
 		if(option === 'todos')
 			$('#area_ninguno')[0].checked = false;
@@ -380,7 +381,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		}
 
  		// seteo las areas seleccionadas
- 		if (todos_check)
+ 		if (todosCheck)
 			infoAreas.features = allAreas;
 		else if (ningunoCheck)
 			infoAreas.features = [];
