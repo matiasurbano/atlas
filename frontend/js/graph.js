@@ -159,15 +159,18 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 	}
 
 	function setDataGraphViviendaTipo(data) {
-		var casa = getAreaValue(data,'vivienda-casa-a,vivienda-casa-b,vivienda-casa-ni', 'sum');
-		var rancho = getAreaValue(data,'vivienda-rancho', 'sum');
-		var casilla = getAreaValue(data,'vivienda-casilla', 'sum');
-		var departamento = getAreaValue(data,'vivienda-departamento', 'sum');
-		var inquilinato = getAreaValue(data,'vivienda-inquilinato', 'sum');
-		var hotel = getAreaValue(data,'vivienda-hotel', 'sum');
-		var local = getAreaValue(data,'vivienda-local', 'sum');
-		var movil = getAreaValue(data,'vivienda-movil', 'sum');
+		var fn = function(x) {return x / 1000000;};
 
+		var casa = getAreaValue(data,'vivienda-casa-a,vivienda-casa-b,vivienda-casa-ni', 'sum', fn);
+		var rancho = getAreaValue(data,'vivienda-rancho', 'sum', fn);
+		var casilla = getAreaValue(data,'vivienda-casilla', 'sum', fn);
+		var departamento = getAreaValue(data,'vivienda-departamento', 'sum', fn);
+		var inquilinato = getAreaValue(data,'vivienda-inquilinato', 'sum', fn);
+		var hotel = getAreaValue(data,'vivienda-hotel', 'sum', fn);
+		var local = getAreaValue(data,'vivienda-local', 'sum', fn);
+		var movil = getAreaValue(data,'vivienda-movil', 'sum', fn);
+
+		var total = casa + rancho + casilla + departamento + inquilinato + hotel + local + movil;
 
 		graphViviendaTipo.load(
 			{
@@ -177,17 +180,21 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				],
 			}
 		);
+
+		graphViviendaTipo.total = total;
+
 	}
 
 	function setDataGraphViviendaCalMat(data) {
+		var fn = function(x) {return x / 1000;};
 
 		graphViviendaCalMat.load(
 			{
 				columns: [
-							['CalMat I'].concat(getAreaValue(data, "vivienda-calmat-1", "sum")),
-							['CalMat II'].concat(getAreaValue(data, "vivienda-calmat-2", "sum")),
-							['CalMat III'].concat(getAreaValue(data, "vivienda-calmat-3", "sum")),
-							['CalMat IV'].concat(getAreaValue(data, "vivienda-calmat-4", "sum"))
+							['CalMat I'].concat(getAreaValue(data, "vivienda-calmat-1", "sum", fn)),
+							['CalMat II'].concat(getAreaValue(data, "vivienda-calmat-2", "sum", fn)),
+							['CalMat III'].concat(getAreaValue(data, "vivienda-calmat-3", "sum", fn)),
+							['CalMat IV'].concat(getAreaValue(data, "vivienda-calmat-4", "sum", fn))
 						]
 			}
 		);
@@ -196,15 +203,21 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraphViviendaServBas(data) {
 
+		var satisfactoria = getAreaValue(data, "vivienda-satisfactoria", "sum");
+		var basica = getAreaValue(data, "vivienda-basica", "sum");
+		var insuficiente = getAreaValue(data, "vivienda-insuficiente", "sum");
+
 		graphViviendaServBas.load(
 			{
 				columns: [
-							['Satisfactoria'].concat(getAreaValue(data, "vivienda-satisfactoria", "sum")),
-							['Básica'].concat(getAreaValue(data, "vivienda-basica", "sum")),
-							['Insuficiente'].concat(getAreaValue(data, "vivienda-insuficiente", "sum"))
+							['Satisfactoria'].concat(satisfactoria),
+							['Básica'].concat(basica),
+							['Insuficiente'].concat(insuficiente)
 						]
 			}
 		);
+
+		graphViviendaServBas.total = satisfactoria + basica + insuficiente;
 
 	}
 
@@ -445,7 +458,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    tooltip: {
 		        format: {
-		            title: function (d) { return '2010'; },
+		            title: function (d) { return '2016'; },
 		            value: function (value, ratio, id) {
 						return value + '%<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
 		            }
@@ -519,8 +532,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
-				                values: [0, 1000000, 2000000, 3000000],
+				                values: [0, 1, 2, 3]
+				                /*
 				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+				                */
 			            	}		            
 		            },
 		          rotated: true
@@ -530,10 +545,17 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    tooltip: {
 		        format: {
+		            title: function (d) { 
+		            	var titx = graphViviendaTipo.categories();
+		            	return '2016: ' + titx[d];
+		            },
 					value: function (value, ratio, id) {
-					    return value;
+					    return (value * 1000000).toFixed(0) + '<br/>' + ((value * 100) / graphViviendaTipo.total).toFixed(2) + "%";
 		            }
 		        }
+		    },
+		    legend: {
+		        show: false
 		    }
 	    });
 
@@ -560,7 +582,26 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    }
+		    },
+    		axis : {
+        		x : {
+            		type : 'category',
+            		tick: {
+                		format: function (x) { return ""; }
+              //format: '%Y' /category/ format string is also available for timeseries data
+            		}
+        		}
+    		},
+    		tooltip: {
+		        format: {
+		            title: function (d) {
+		            	return '2016: Cantidad de viviendas'; 
+		            },
+		            value: function (value, ratio, id) {
+						return (value * 1000).toFixed(0);
+		            }
+		        }
+    		},	
 		});
 
 
@@ -581,6 +622,16 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onclick: function (d, i) { console.log("onclick", d, i); },
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	return '2016';
+		            },
+					value: function (value, ratio, id) {
+					    return ((value * 100) / graphViviendaServBas.total).toFixed(1) + '%<br/> ' + (value).toFixed(0);
+		            }
+		        }
 		    }
 		});
 
