@@ -28,11 +28,18 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraphPoblacion(data) {
 
+		var fn = function(x) {return x / 1000000;};
+
 		graphPoblacion.load(
 			{
-				columns: [
-							['2001'].concat(getAreaValue(data, "poblacion-2001", "sum")),
-							['2010'].concat(getAreaValue(data, "poblacion-2010", "sum"))
+/*				columns: [
+							['2001'].concat(getAreaValue(data, "poblacion-2001", "sum", fn)),
+							['2010'].concat(getAreaValue(data, "poblacion-2010", "sum", fn))
+						]*/
+				columns: [['Hab',
+							getAreaValue(data, "poblacion-2001", "sum", fn),
+							getAreaValue(data, "poblacion-2010", "sum", fn)
+							]
 						]
 			}
 		);
@@ -46,6 +53,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		// H       -> %?    => Imasc(=H)   -> %?    => 100(=M)     -> %?
 
 		var imasc = getAreaValue(data, "indice-masculinidad", "avg");
+		var pob = getAreaValue(data, "poblacion-2010", "sum");
 		var hm = imasc + 100;
 		var porc_hombres = (imasc * 100 / hm).toFixed(2);
 		var porc_mujeres = 100 - porc_hombres;
@@ -59,6 +67,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			}
 		);
 
+		graphMasculinidad.poblacion_2010 = pob;
 	}
 
 	function setDataGraphDensidad(data) {
@@ -354,20 +363,59 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        width: 250
 		    },
 		    data: {
-		        columns: [
-		            ['2001', 150 ],
+		    	x: 'x',
+		    	columns: [
+		    				['x', '2001', '2010'],
+		    				['Hab', 0, 0]
+		    			],
+/*		        columns: [
+		            ['2001', 150],
 		            ['2010', 180]
 		        ],
+		        */
 		        type: 'bar'
+		        /*,
+		        color: function (color, d) {
+		            var colors = ['#00ff00', '#0000ff']
+
+		            // d will be 'id' when called for legends
+		            return d.id && d.index === 1 ? colors[1] : colors[0];
+		        }*/
 		    },
+			axis: {
+					x: {
+			            type: 'category', // this needed to load string x value
+			            show: true
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+				                format: function (x) { return x; }
+			            	}		            
+		            }
+		        },		    
 		    bar: {
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
 		        }
 		        //width: 100 // this makes bar width 100px
 		    },
-		    color: {
+	/*	    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    }
+		    */
+
+		    tooltip: {
+		        format: {
+		            //title: function (d) { return 'Habitantes'; },
+		            value: function (value, ratio, id) {
+						return (value * 1000000).toFixed(0);
+		            }
+		        }
+    		},
+    		legend: {
+		        show: false
 		    }
 		});
 
@@ -387,7 +435,22 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onclick: function (d, i) { console.log("onclick", d, i); },
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-		    }
+		    },
+		    pie: {
+		        label: {
+		            format: function (value, ratio, id) {
+		                return value;
+		            }
+		        }
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { return '2010'; },
+		            value: function (value, ratio, id) {
+						return value + '%<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
+		            }
+		        }
+    		}		    
 		});
 
 		graphDensidad = c3.generate({
@@ -412,13 +475,24 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
-				                values: [0, 2000, 4000, 6000, 8000, 10000]
+				                values: [0, 2000, 4000, 6000, 8000, 10000],
 				                //,
-				                //format: function (x) { return Math.round(x / 1000000) + "M"; }
-			            	}		            
+				                format: function (x) { return x / 1000; }
+			            	}
 		            },
 		          rotated: true
 		        },
+		    tooltip: {
+		        format: {
+		            title: function (d) {
+		            	var titx = graphDensidad.categories();
+		            	return 'Hab/Km<sup>2</sup> - ' + titx[d]; 
+		            },
+		            value: function (value, ratio, id) {
+						return (value).toFixed(0);
+		            }
+		        }
+    		},		        
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    }
