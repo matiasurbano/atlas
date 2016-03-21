@@ -51,13 +51,21 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
 		});
 
-		this._div.innerHTML = '<h5>Utilizá el menú de la izquierda y</br> seleccioná el área que deseas consultar</h5>' +  
-				(props ? htmlData :  '' )
+		if (dataSelected.length == 0) {
+			this._div.innerHTML = '\
+			 <h5><i class="fa fa-exclamation-triangle"></i> \
+			 Hac&eacute; click en el &iacute;cono <i class="fa fa-bars"></i>, <br> \
+			 si ten&eacute;s dudas de como usar este Atlas <br> \
+			 hac&eacute; click  en el &iacute;cono de la derecha <i class="fa fa-question-circle fa-5"></i>';
+		}
+		else {
+				this._div.innerHTML = (props ? htmlData :  '' );
+		}
 	};
 
 
 	getTabSelected = function() {
-		return $('.nav-tabs .active').text();
+		return $('.nav-tabs .active').text().trim();
 	}
 
 	getMapSelected = function(props) {
@@ -151,7 +159,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			opacity: 1,
 			color: 'white',
 			dashArray: '3',
-			fillOpacity: 0.7,
+			fillOpacity: 0.4,
 			"z-index": 1,
 			fillColor: getColor(feature.properties.density)
 		};
@@ -359,7 +367,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	function areasDisabled(option) {
 		var allAreas = getAreasSelected().features;
-		var todos_check = $('#area_todos')[0].checked;
+		var todosCheck = false;
+		var ningunoCheck = false;
 
 		if(option === 'todos')
 			$('#area_ninguno')[0].checked = false;
@@ -380,7 +389,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		}
 
  		// seteo las areas seleccionadas
- 		if (todos_check)
+ 		if (todosCheck)
 			infoAreas.features = allAreas;
 		else if (ningunoCheck)
 			infoAreas.features = [];

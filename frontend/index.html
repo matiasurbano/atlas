@@ -1,6 +1,6 @@
 <html>
 <head>
-	<title>ATLAS</title>
+	<title>Atlas del Conurbano</title>
 	<meta charset="utf-8" />
 
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
@@ -8,6 +8,8 @@
 
 	<!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
 
 	<link rel="stylesheet" type="text/css" href="css/tooltipster.css">
 	<!-- Latest compiled and minified CSS -->
@@ -65,52 +67,75 @@
 
 			<ul class="nav nav-tabs" id="myTab">
 				<li class="active">
-					<a href="#poblacion">Poblaci&oacute;n</a>
+					<!-- Poblaci&oacute;n -->
+					<a href="#poblacion"><i class="fa fa-users fa-5"></i></a>
 				</li>
-				<li><a href="#vivienda">Vivienda</a></li>
-				<li><a href="#pea">PEA</a></li>
-				<li><a href="#pbg">PBG</a></li>
+				<li>
+					<!-- Vivienda -->
+					<a href="#vivienda"><i class="fa fa-home fa-5"></i></a></li>
+				<li>
+					<!-- PEA -->
+					<a href="#pea">PEA</a></li>
+				<li>
+					<!-- PBG -->
+					<a href="#pbg">PBG</a></li>
 			</ul>
+			<a href="ayuda.html" rel="modal:open">
+				<i 	id="help" 
+				class="fa fa-question-circle fa-5"></i>
+			</a>
 			<div class="tab-content container">
 				<div class="tab-pane active" id="poblacion">
 					<h4>Poblaci&oacute;n</h4>
+					<h5>(mi de habitantes)</h5>
 					<div id="poblacionVBars"></div>
 
 					<h4>Densidad poblacional</h4>
+					<h5>(mil habitantes/km<sup>2</sup>)</h5>
 					<div id="poblacionHBars"></div>
 
 					<h4>Índice de masculinidad</h4>
+					<h5>(% de habitantes)</h5>
 					<div id="poblacionPie"></div>
 
 				</div>
 				<div class="tab-pane" id="vivienda">
 					<h4>Tipo de vivienda</h4>
+					<h5>(mi)</h5>
 					<div id="viviendaHBars"></div>				      		
 
 					<h4>Servicos básicos</h4>
+					<h5>(%)</h5>
 					<div id="viviendaPie"></div>
 					
-					<h4>CLMAT</h4>
+					<h4>CALMAT</h4>
+					<h5>(mil)</h5>
 					<div id="viviendaVBars"></div>
 				</div>
 				<div class="tab-pane" id="pea">
 					<h4>Condición de actividad</h4>
+					<h5>(mi)</h5>
 					<div id="peaVBars"></div>
 
 					<h4>Distribucion</h4>
+					<h5>(mi)</h5>
 					<div id="peaHBars"></div>	
 
 					<h4>Ocupacion</h4>
+					<h5>(%)</h5>
 					<div id="peaPie"></div>			      		
 				</div>
 				<div class="tab-pane" id="pbg">
 					<h4>Tipo de Produccion</h4>
+					<h5>(mi)</h5>
 					<div id="pbgVBars"></div>
 
 					<h4>Bienes</h4>
+					<h5>(mi)</h5>
 					<div id="pbgHBars1"></div>				      		
 
 					<h4>Servicios</h4>
+					<h5>(mi)</h5>
 					<div id="pbgHBars2"></div>				      		
 
 				</div>
@@ -129,7 +154,7 @@
 				</button>
 			</div>
 			<div class="col-xs-6 col-md-10 col-lg-10 title">
-				Proyecto Atlas
+				Atlas del Conurbano
 			</div>
 			<div class="col-xs-3 col-md-1 col-lg-1 button-right">
 <!-- 						<button type="button" id="btn-graphics" class="btn btn-default">
@@ -148,11 +173,6 @@
 					<div id="map"></div>
 				</div>
 			</div>
-
-			<a href="ayuda.html" rel="modal:open">
-				<i 	id="help" 
-				class="fa fa-question-circle fa-3x"></i>
-			</a>
 
 		
 		</boody>

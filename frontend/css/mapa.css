@@ -178,6 +178,18 @@ html, body {
   border-color: #828080;
 }
 
+.tab-pane h4 {
+    font-size: 16px;
+    margin-top: 4px;
+    margin-bottom: 0px;
+}
+
+.tab-pane h5 {
+    font-size: 11px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 
 .navbar-inverse {
   background: #a7c7dc;
@@ -214,9 +226,11 @@ html, body {
 
 
 #help {
-  position: absolute;
-  bottom: 5px;
-  left: 10px;
+    position: absolute;
+    right: 10px;
+    top: 15px;
+    z-index: 999;
+    font-size: 30px;
 }
 
 .modal {
@@ -229,9 +243,10 @@ html, body {
 }
 
 #ayuda-content {
-  height: 500px;
-  overflow-y: scroll;
-  width: 500px;
+    height: 500px;
+    overflow-y: scroll;
+    width: 515px;
+    padding: 10px;
 }
 
 #ayuda-form {
@@ -241,5 +256,8 @@ html, body {
 
 #ayuda-content p { 
   text-align: justify;
+}
+.fa {
+    font-size: 20px;
 }
 

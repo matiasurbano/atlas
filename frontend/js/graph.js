@@ -28,12 +28,20 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraphPoblacion(data) {
 
+		var fn = function(x) {return x / 1000000;};
+
 		graphPoblacion.load(
 			{
 				columns: [
-							['2001'].concat(getAreaValue(data, "poblacion-2001", "sum")),
-							['2010'].concat(getAreaValue(data, "poblacion-2010", "sum"))
+							['2001'].concat(getAreaValue(data, "poblacion-2001", "sum", fn)),
+							['2010'].concat(getAreaValue(data, "poblacion-2010", "sum", fn))
 						]
+/*				columns: [['Hab',
+							getAreaValue(data, "poblacion-2001", "sum", fn),
+							getAreaValue(data, "poblacion-2010", "sum", fn)
+							]
+						]
+						*/
 			}
 		);
 
@@ -46,6 +54,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		// H       -> %?    => Imasc(=H)   -> %?    => 100(=M)     -> %?
 
 		var imasc = getAreaValue(data, "indice-masculinidad", "avg");
+		var pob = getAreaValue(data, "poblacion-2010", "sum");
 		var hm = imasc + 100;
 		var porc_hombres = (imasc * 100 / hm).toFixed(2);
 		var porc_mujeres = 100 - porc_hombres;
@@ -59,6 +68,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			}
 		);
 
+		graphMasculinidad.poblacion_2010 = pob;
 	}
 
 	function setDataGraphDensidad(data) {
@@ -150,15 +160,18 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 	}
 
 	function setDataGraphViviendaTipo(data) {
-		var casa = getAreaValue(data,'vivienda-casa-a,vivienda-casa-b,vivienda-casa-ni', 'sum');
-		var rancho = getAreaValue(data,'vivienda-rancho', 'sum');
-		var casilla = getAreaValue(data,'vivienda-casilla', 'sum');
-		var departamento = getAreaValue(data,'vivienda-departamento', 'sum');
-		var inquilinato = getAreaValue(data,'vivienda-inquilinato', 'sum');
-		var hotel = getAreaValue(data,'vivienda-hotel', 'sum');
-		var local = getAreaValue(data,'vivienda-local', 'sum');
-		var movil = getAreaValue(data,'vivienda-movil', 'sum');
+		var fn = function(x) {return x / 1000000;};
 
+		var casa = getAreaValue(data,'vivienda-casa-a,vivienda-casa-b,vivienda-casa-ni', 'sum', fn);
+		var rancho = getAreaValue(data,'vivienda-rancho', 'sum', fn);
+		var casilla = getAreaValue(data,'vivienda-casilla', 'sum', fn);
+		var departamento = getAreaValue(data,'vivienda-departamento', 'sum', fn);
+		var inquilinato = getAreaValue(data,'vivienda-inquilinato', 'sum', fn);
+		var hotel = getAreaValue(data,'vivienda-hotel', 'sum', fn);
+		var local = getAreaValue(data,'vivienda-local', 'sum', fn);
+		var movil = getAreaValue(data,'vivienda-movil', 'sum', fn);
+
+		var total = casa + rancho + casilla + departamento + inquilinato + hotel + local + movil;
 
 		graphViviendaTipo.load(
 			{
@@ -168,17 +181,21 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				],
 			}
 		);
+
+		graphViviendaTipo.total = total;
+
 	}
 
 	function setDataGraphViviendaCalMat(data) {
+		var fn = function(x) {return x / 1000;};
 
 		graphViviendaCalMat.load(
 			{
 				columns: [
-							['CalMat I'].concat(getAreaValue(data, "vivienda-calmat-1", "sum")),
-							['CalMat II'].concat(getAreaValue(data, "vivienda-calmat-2", "sum")),
-							['CalMat III'].concat(getAreaValue(data, "vivienda-calmat-3", "sum")),
-							['CalMat IV'].concat(getAreaValue(data, "vivienda-calmat-4", "sum"))
+							['CalMat I'].concat(getAreaValue(data, "vivienda-calmat-1", "sum", fn)),
+							['CalMat II'].concat(getAreaValue(data, "vivienda-calmat-2", "sum", fn)),
+							['CalMat III'].concat(getAreaValue(data, "vivienda-calmat-3", "sum", fn)),
+							['CalMat IV'].concat(getAreaValue(data, "vivienda-calmat-4", "sum", fn))
 						]
 			}
 		);
@@ -187,25 +204,40 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraphViviendaServBas(data) {
 
+		var satisfactoria = getAreaValue(data, "vivienda-satisfactoria", "sum");
+		var basica = getAreaValue(data, "vivienda-basica", "sum");
+		var insuficiente = getAreaValue(data, "vivienda-insuficiente", "sum");
+		var total = satisfactoria + basica + insuficiente;
+
+		var porc_satisfactoria = (satisfactoria * 100 / total).toFixed(1);
+		var porc_basica = (basica * 100 / total).toFixed(1);
+		var porc_insuficiente =  100 - porc_satisfactoria - porc_basica;
+
 		graphViviendaServBas.load(
 			{
 				columns: [
-							['Satisfactoria'].concat(getAreaValue(data, "vivienda-satisfactoria", "sum")),
-							['Básica'].concat(getAreaValue(data, "vivienda-basica", "sum")),
-							['Insuficiente'].concat(getAreaValue(data, "vivienda-insuficiente", "sum"))
+							['Satisfactoria'].concat(porc_satisfactoria),
+							['Basica'].concat(porc_basica),
+							['Insuficiente'].concat(porc_insuficiente)
 						]
 			}
 		);
 
+		graphViviendaServBas.values = {};
+		graphViviendaServBas.values['Satisfactoria'] = satisfactoria;
+		graphViviendaServBas.values['Basica'] = basica;
+		graphViviendaServBas.values['Insuficiente'] = insuficiente;
+
 	}
 
 	function setDataGraphPeaTipo(data) {
+		var fn = function(x) {return x / 1000000;};
 
 		graphPeaTipo.load(
 			{
 				columns: [
-							['Activa'].concat(getAreaValue(data, "pea-ocupada,pea-desocupada", "sum")),
-							['Inactiva'].concat(getAreaValue(data, "no-pea", "sum"))
+							['Activa'].concat(getAreaValue(data, "pea-ocupada,pea-desocupada", "sum", fn)),
+							['Inactiva'].concat(getAreaValue(data, "no-pea", "sum", fn))
 						]
 			}
 		);
@@ -213,22 +245,33 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 	}
 
 	function setDataGraphPeaOcupacion(data) {
+		var ocupada = getAreaValue(data, "pea-ocupada", "sum");
+		var desocupada = getAreaValue(data, "pea-desocupada", "sum");
+		var total = ocupada + desocupada;
+
+		var porc_ocupada = (ocupada * 100 / total).toFixed(1);
+		var porc_desocupada =  (100 - porc_ocupada).toFixed(1);
 
 		graphPeaOcupacion.load(
 			{
 				columns: [
-							['Ocupada'].concat(getAreaValue(data, "pea-ocupada", "sum")),
-							['Desocupada'].concat(getAreaValue(data, "pea-desocupada", "sum"))
+							['Ocupada'].concat(porc_ocupada),
+							['Desocupada'].concat(porc_desocupada)
 						]
 			}
 		);
 
+		graphPeaOcupacion.values = {};
+		graphPeaOcupacion.values['Ocupada'] = ocupada;
+		graphPeaOcupacion.values['Desocupada'] = desocupada;
 	}
 
 	function setDataGraphPeaDistribucion(data) {
-		var ocupada = getAreaValue(data,'pea-ocupada', 'sum');
-		var desocupada = getAreaValue(data,'pea-desocupada', 'sum');
-		var inactiva = getAreaValue(data,'no-pea', 'sum');
+		var fn = function(x) {return x / 1000000;};
+
+		var ocupada = getAreaValue(data,'pea-ocupada', 'sum', fn);
+		var desocupada = getAreaValue(data,'pea-desocupada', 'sum', fn);
+		var inactiva = getAreaValue(data,'no-pea', 'sum', fn);
 
 		graphPeaDistribucion.load(
 			{
@@ -238,15 +281,18 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				],
 			}
 		);
+
+		graphPeaDistribucion.total = ocupada + desocupada + inactiva;
 	}
 
 	function setDataGraphpbgTipo(data) {
+		var fn = function(x) {return x / 1000000;};
 
 		graphpbgTipo.load(
 			{
 				columns: [
-							['Bienes'].concat(getAreaValue(data, "pbg-a,pbg-b,pbg-c,pbg-d,pbg-e,pbg-f", "sum")),
-							['Servicios'].concat(getAreaValue(data, "pbg-g,pbg-h,pbg-i,pbg-j,pbg-k,pbg-l,pbg-m,pbg-n,pbg-o,pbg-p", "sum"))
+							['Bienes'].concat(getAreaValue(data, "pbg-a,pbg-b,pbg-c,pbg-d,pbg-e,pbg-f", "sum", fn)),
+							['Servicios'].concat(getAreaValue(data, "pbg-g,pbg-h,pbg-i,pbg-j,pbg-k,pbg-l,pbg-m,pbg-n,pbg-o,pbg-p", "sum", fn))
 						]
 			}
 		);
@@ -285,6 +331,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				]				
 			}
 		);
+		graphPbgBienes.total = pbg_a + pbg_b + pbg_c + pbg_d + pbg_e + pbg_f
 	}
 
 
@@ -320,6 +367,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				],
 			}
 		);
+
+		graphpbgServicios.total = pbg_g + pbg_h + pbg_i + pbg_j + pbg_k + pbg_l + pbg_m + pbg_n + pbg_o + pbg_p;
 	}
 
 
@@ -354,12 +403,40 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        width: 250
 		    },
 		    data: {
+		    	//x: 'x',
+/*		    	columns: [
+		    				['x', '2001', '2010'],
+		    				['Hab', 0, 0]
+		    			],*/
 		        columns: [
-		            ['2001', 150 ],
+		            ['2001', 150],
 		            ['2010', 180]
 		        ],
 		        type: 'bar'
+		        /*,
+		        color: function (color, d) {
+		            var colors = ['#00ff00', '#0000ff']
+
+		            // d will be 'id' when called for legends
+		            return d.id && d.index === 1 ? colors[1] : colors[0];
+		        }*/
 		    },
+			axis: {
+					x: {
+			            type: 'category', // this needed to load string x value
+			            tick: {
+				                // this also works for non timeseries data
+				                format: function (x) { return ""; }
+			            	}		            
+			          },
+		        	y: {
+			            tick: {
+				                // this also works for non timeseries data
+				                values: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+				                format: function (x) { return x; }
+			            	}		            
+		            }
+		        },		    
 		    bar: {
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
@@ -368,7 +445,15 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    }
+		    },
+		    tooltip: {
+		        format: {
+		            //title: function (d) { return 'Habitantes'; },
+		            value: function (value, ratio, id) {
+						return (value * 1000000).toFixed(0);
+		            }
+		        }
+    		}
 		});
 
 	 	graphMasculinidad = c3.generate({
@@ -387,7 +472,22 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onclick: function (d, i) { console.log("onclick", d, i); },
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
-		    }
+		    },
+		    pie: {
+		        label: {
+		            format: function (value, ratio, id) {
+		                return value;
+		            }
+		        }
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { return '2016'; },
+		            value: function (value, ratio, id) {
+						return value + '%<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
+		            }
+		        }
+    		}		    
 		});
 
 		graphDensidad = c3.generate({
@@ -412,13 +512,24 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
-				                values: [0, 2000, 4000, 6000, 8000, 10000]
+				                values: [0, 2000, 4000, 6000, 8000, 10000],
 				                //,
-				                //format: function (x) { return Math.round(x / 1000000) + "M"; }
-			            	}		            
+				                format: function (x) { return x / 1000; }
+			            	}
 		            },
 		          rotated: true
 		        },
+		    tooltip: {
+		        format: {
+		            title: function (d) {
+		            	var titx = graphDensidad.categories();
+		            	return 'Hab/Km<sup>2</sup> - ' + titx[d]; 
+		            },
+		            value: function (value, ratio, id) {
+						return (value).toFixed(0);
+		            }
+		        }
+    		},		        
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    }
@@ -445,8 +556,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
-				                values: [0, 1000000, 2000000, 3000000],
+				                values: [0, 1, 2, 3]
+				                /*
 				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+				                */
 			            	}		            
 		            },
 		          rotated: true
@@ -456,10 +569,17 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    tooltip: {
 		        format: {
+		            title: function (d) { 
+		            	var titx = graphViviendaTipo.categories();
+		            	return '2016: ' + titx[d];
+		            },
 					value: function (value, ratio, id) {
-					    return value;
+					    return (value * 1000000).toFixed(0) + '<br/>' + ((value * 100) / graphViviendaTipo.total).toFixed(2) + "%";
 		            }
 		        }
+		    },
+		    legend: {
+		        show: false
 		    }
 	    });
 
@@ -486,7 +606,26 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    }
+		    },
+    		axis : {
+        		x : {
+            		type : 'category',
+            		tick: {
+                		format: function (x) { return ""; }
+              //format: '%Y' /category/ format string is also available for timeseries data
+            		}
+        		}
+    		},
+    		tooltip: {
+		        format: {
+		            title: function (d) {
+		            	return '2016: Cantidad de viviendas'; 
+		            },
+		            value: function (value, ratio, id) {
+						return (value * 1000).toFixed(0);
+		            }
+		        }
+    		}
 		});
 
 
@@ -500,13 +639,30 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        // iris data from R
 		        columns: [
 		            ['Satisfactoria', 30],
-		            ['Básica', 60],
+		            ['Basica', 60],
 		            ['Insuficiente', 120],
 		        ],
 		        type : 'pie',
 		        onclick: function (d, i) { console.log("onclick", d, i); },
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		    },
+		    pie: {
+		        label: {
+		            format: function (value, ratio, id) {
+		                return (value).toFixed(1);
+		            }
+		        }
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	return '2016';
+		            },
+					value: function (value, ratio, id) {
+					    return value + '%<br/> ' + graphViviendaServBas.values[id].toFixed(0);
+		            }
+		        }
 		    }
 		});
 
@@ -523,6 +679,22 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        ],
 		        type: 'bar'
 		    },
+    		axis : {
+        		x : {
+            		type : 'category',
+            		tick: {
+                		format: function (x) { return ""; }
+              //format: '%Y' /category/ format string is also available for timeseries data
+            		}
+        		},
+	        	y: {
+		            tick: {
+			                // this also works for non timeseries data
+			                values: [0, 1, 2, 3, 4, 5, 6],
+			                format: function (x) { return Math.round(x); }
+		            	}		            
+	            },	        		
+    		},		    
 		    bar: {
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
@@ -531,7 +703,17 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    }
+		    },
+    		tooltip: {
+		        format: {
+		            title: function (d) {
+		            	return '2016: Cantidad de poblacion'; 
+		            },
+		            value: function (value, ratio, id) {
+						return (value * 1000000).toFixed(0);
+		            }
+		        }
+    		}
 		});
 
 	 	graphPeaOcupacion = c3.generate({
@@ -550,6 +732,23 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onclick: function (d, i) { console.log("onclick", d, i); },
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		    },
+		    pie: {
+		        label: {
+		            format: function (value, ratio, id) {
+		                return value;
+		            }
+		        }
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	return '2016';
+		            },
+					value: function (value, ratio, id) {
+					    return value + '%<br/> ' + graphPeaOcupacion.values[id].toFixed(0);
+		            }
+		        }
 		    }
 		});
 
@@ -574,8 +773,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
-				                values: [0, 1000000, 2000000, 3000000, 4000000, 5000000],
-				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+				                values: [0, 1, 2, 3, 4, 5],
+				                format: function (x) { return Math.round(x); }
 			            	}		            
 		            },		          
 		          rotated: true
@@ -583,13 +782,17 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
-		    tooltip: {
+    		tooltip: {
 		        format: {
+		            title: function (d) {
+		            	return '2016: Ocupada'; 
+		            },
 					value: function (value, ratio, id) {
-					    return value;
-		            }
+					    return ((value * 100) / graphPeaDistribucion.total).toFixed(1) + '%<br/> ' + (value * 1000000).toFixed(0);
+		            }		            
 		        }
-		    }
+    		}
+
 	    });
 
 		graphpbgTipo = c3.generate({
@@ -605,6 +808,17 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        ],
 		        type: 'bar'
 		    },
+		    
+    		axis : {
+        		x : {
+            		type : 'category',
+            		tick: {
+                		format: function (x) { return ""; }
+              //format: '%Y' /category/ format string is also available for timeseries data
+            		}
+        		}
+    		},		    
+
 		    bar: {
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
@@ -613,7 +827,19 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    },
 		    color: {
 		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
+		    tooltip: {
+		        format: {
+		            title: function (d) { 
+		            	var titx = graphpbgTipo.categories();
+		            	return '2016: Cantidad tipo de produccion';
+		            },
+					value: function (value, ratio, id) {
+					    return (value * 1000000).toFixed(0);
+		            }
+		        }
 		    }
+
 		});
 
 
@@ -642,12 +868,14 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			axis: {
 					x: {
 			            type: 'category' // this needed to load string x value
-			          },
+			        },
 		        	y: {
 			            tick: {
 				                // this also works for non timeseries data
 				                values: [0, 5000000, 10000000, 15000000, 20000000, 25000000],
-				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+				                format: function (x) { 
+				                	return Math.round(x / 1000000); 
+				                }
 			            	}		            
 		            },
 
@@ -659,17 +887,21 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
-		            	return d === 0 ? "Agricultura, ganadería,<br/>caza y silvicultura" :
-							   d === 1 ? "Pesca explotación de criaderos<br/>de peces y granjas piscícolas<br/>y servicios conexos" :
+		            	var m = d === 0 ? "Agricultura, ganadería,<br/>caza y silvicultura" :
+							   d === 1 ? "Pesca explotación de <br/>criaderos de peces y <br/>granjas piscícolas<br/>y servicios conexos" :
 							   d === 2 ? "Explotación de minas<br/>y canteras" :
 							   d === 3 ? "Industria Manufacturera" :
 							   d === 4 ? "Electricidad, gas y agua" :
 							   d === 5 ? "Construcción" : "";
+						return "2016: " + m
 					},
 					value: function (value, ratio, id) {
-					    return value;
+					    return value + '<br/>' + (value * 100 / graphPbgBienes.total).toFixed(2) + '%';
 		            }
 		        }
+		    },
+		    legend: {
+		        show: false
 		    }
 	    });
 
@@ -708,7 +940,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			            tick: {
 				                // this also works for non timeseries data
 				                //values: [0, 2500000, 5000000, 7500000, 10000000],
-				                format: function (x) { return Math.round(x / 1000000) + "M"; }
+				                format: function (x) { return Math.round(x / 1000000); }
 			            	}		            
 			            },
 		          	rotated: true
@@ -719,7 +951,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
-		            	return d === 0 ? "Comercio al por mayor, al por menor, <br/>reparación de vehículos automotores, <br/>motocicletas, efectos personales <br/>y enseres domésticos" :
+		            	var m = d === 0 ? "Comercio al por mayor, <br/>al por menor, reparación <br/>de vehículos automotores, <br/>motocicletas, efectos personales <br/>y enseres domésticos" :
 								d === 1 ? "Servicios de hotelería<br/>y restaurantes" :
 								d === 2 ? "Servicio de transporte,<br/>de almacenamiento<br/>y de comunicaciones" :
 								d === 3 ? "Intermediación financiera<br/>y otros servicios financieros" :
@@ -729,11 +961,15 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 								d === 7 ? "Servicios sociales<br/>y de salud" :
 								d === 8 ? "Servicios comunitarios,<br/>sociales y personales N.C.P." :
 								d === 9 ? "Hogares privados con<br/>servicio doméstico" : "";
+						return "2016: " + m
 					},
 					value: function (value, ratio, id) {
-					    return value;
-		            }				                
+					    return value + '<br/>' + (value * 100 / graphpbgServicios.total).toFixed(2) + '%';
+		            }
 		        }
+		    },
+		    legend: {
+		        show: false
 		    }
 	    });
 
