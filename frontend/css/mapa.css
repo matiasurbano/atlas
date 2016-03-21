@@ -243,9 +243,10 @@ html, body {
 }
 
 #ayuda-content {
-  height: 500px;
-  overflow-y: scroll;
-  width: 500px;
+    height: 500px;
+    overflow-y: scroll;
+    width: 515px;
+    padding: 10px;
 }
 
 #ayuda-form {
