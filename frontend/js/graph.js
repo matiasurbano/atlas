@@ -73,8 +73,9 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 	function setDataGraphDensidad(data) {
 
+		// Se quita el agrupamiento
 		if (getAreaSelected() === 'Partidos')	// agrupo por la cantidad
-			data = groupOthers(data.features, 'densidad,poblacion-2010,poblacion-2001,superficie', 6);
+			data = groupOthers(data.features, 'densidad,poblacion-2010,poblacion-2001,superficie', 500);
 		else
 			data = data.features;
 
@@ -152,7 +153,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 					}
 				);
 
-		record.properties['name'] = 'Otros';
+		record.properties['name'] = '';
 
 		dataGrouped.push(record);
 		return dataGrouped;
@@ -476,15 +477,15 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    pie: {
 		        label: {
 		            format: function (value, ratio, id) {
-		                return value;
+		                return '';
 		            }
 		        }
 		    },
 		    tooltip: {
 		        format: {
-		            title: function (d) { return '2016'; },
+		            title: function (d) { return ''; },
 		            value: function (value, ratio, id) {
-						return value + '%<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
+									return value + '%'; //<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
 		            }
 		        }
     		}		    
@@ -493,7 +494,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		graphDensidad = c3.generate({
 			bindto: '#poblacionHBars',
 		    size: {
-		        height: 150,
+		        height: 400,
 		        width: 250
 		    },
 			data: {
@@ -571,7 +572,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        format: {
 		            title: function (d) { 
 		            	var titx = graphViviendaTipo.categories();
-		            	return '2016: ' + titx[d];
+		            	return '2010: ' + titx[d];
 		            },
 					value: function (value, ratio, id) {
 					    return (value * 1000000).toFixed(0) + '<br/>' + ((value * 100) / graphViviendaTipo.total).toFixed(2) + "%";
@@ -599,14 +600,14 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        type: 'bar'
 		    },
 		    bar: {
+		    		zerobased: false,
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
-		        }
-		        //width: 100 // this makes bar width 100px
+		        }	
 		    },
 		    color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    },
+		        pattern: ['#1F77B4','#3481B7','#5492BD','#1F77B4']
+		    },		    
     		axis : {
         		x : {
             		type : 'category',
@@ -619,10 +620,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
     		tooltip: {
 		        format: {
 		            title: function (d) {
-		            	return '2016: Cantidad de viviendas'; 
+		            	return '2010: Cantidad de viviendas'; 
 		            },
 		            value: function (value, ratio, id) {
-						return (value * 1000).toFixed(0);
+									return (value * 1000).toFixed(0);
 		            }
 		        }
     		}
@@ -647,20 +648,23 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 		    },
+		    color: {
+		        pattern: ['#1F77B4','#3481B7','#5492BD']
+		    },		    
 		    pie: {
 		        label: {
 		            format: function (value, ratio, id) {
-		                return (value).toFixed(1);
+		                return ""; //(value).toFixed(1);
 		            }
 		        }
 		    },
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
-		            	return '2016';
-		            },
+		            	return '2010';
+		            },	
 					value: function (value, ratio, id) {
-					    return value + '%<br/> ' + graphViviendaServBas.values[id].toFixed(0);
+					    return value + '%'; // <br/> ' + graphViviendaServBas.values[id].toFixed(0);
 		            }
 		        }
 		    }
@@ -677,7 +681,13 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ['Activa', 150 ],
 		            ['Inactiva', 180]
 		        ],
-		        type: 'bar'
+		        type: 'bar',
+		        colors: {
+		        	'Activa': '#1F77B4',
+							'Ocupada': '#1F77B4',
+							'Desocupada': '#3481B7',
+							'Inactiva': '#AEC7E8'
+		    		}
 		    },
     		axis : {
         		x : {
@@ -701,13 +711,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        }
 		        //width: 100 // this makes bar width 100px
 		    },
-		    color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    },
     		tooltip: {
 		        format: {
 		            title: function (d) {
-		            	return '2016: Cantidad de poblacion'; 
+		            	return '2010: Cantidad de poblacion'; 
 		            },
 		            value: function (value, ratio, id) {
 						return (value * 1000000).toFixed(0);
@@ -736,14 +743,14 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		    pie: {
 		        label: {
 		            format: function (value, ratio, id) {
-		                return value;
+		                return ''; //	value;
 		            }
 		        }
 		    },
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
-		            	return '2016';
+		            	return '2010';
 		            },
 					value: function (value, ratio, id) {
 					    return value + '%<br/> ' + graphPeaOcupacion.values[id].toFixed(0);
@@ -764,7 +771,21 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 					['x', 'Ocupada', 'Desocupada ', 'Inactiva'],
 					['Cantidad', 50, 20, 10]
 				],
-				type: 'bar'
+				type: 'bar',
+        colors: {
+					'x': '#FFFFFF',
+					'Ocupada': '#1F77B4',
+					'Desocupada': '#3481B7',
+					'Inactiva': '#AEC7E8'
+    		},
+        color: function(inColor, data) {
+            var colors = ['#1F77B4','#FABF62', '#AEC7E8'];
+            if(data.index !== undefined) {
+                return colors[data.index];
+            }
+
+            return inColor;
+        }
 			},
 			axis: {
 					x: {
@@ -779,19 +800,19 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            },		          
 		          rotated: true
 		        },
-			color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    },
     		tooltip: {
 		        format: {
 		            title: function (d) {
-		            	return '2016: Ocupada'; 
+		            	return '2010: Ocupada'; 
 		            },
 					value: function (value, ratio, id) {
 					    return ((value * 100) / graphPeaDistribucion.total).toFixed(1) + '%<br/> ' + (value * 1000000).toFixed(0);
 		            }		            
 		        }
-    		}
+    		},
+			legend: {
+				show: false
+			}
 
 	    });
 
@@ -826,13 +847,13 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        //width: 100 // this makes bar width 100px
 		    },
 		    color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#1f77b4', '#aec7e8']
 		    },
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
 		            	var titx = graphpbgTipo.categories();
-		            	return '2016: Cantidad tipo de produccion';
+		            	return '2005: Cantidad tipo de produccion';
 		            },
 					value: function (value, ratio, id) {
 					    return (value * 1000000).toFixed(0);
@@ -881,8 +902,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 		        	rotated: true
 		        },
-			color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    color: {
+		        pattern: ['#1f77b4']
 		    },
 		    tooltip: {
 		        format: {
@@ -893,7 +914,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 							   d === 3 ? "Industria Manufacturera" :
 							   d === 4 ? "Electricidad, gas y agua" :
 							   d === 5 ? "Construcción" : "";
-						return "2016: " + m
+						return "2005: " + m
 					},
 					value: function (value, ratio, id) {
 					    return value + '<br/>' + (value * 100 / graphPbgBienes.total).toFixed(2) + '%';
@@ -945,8 +966,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			            },
 		          	rotated: true
 		        },
-			color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    color: {
+		        pattern: ['#aec7e8']
 		    },
 		    tooltip: {
 		        format: {
@@ -961,7 +982,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 								d === 7 ? "Servicios sociales<br/>y de salud" :
 								d === 8 ? "Servicios comunitarios,<br/>sociales y personales N.C.P." :
 								d === 9 ? "Hogares privados con<br/>servicio doméstico" : "";
-						return "2016: " + m
+						return "2005: " + m
 					},
 					value: function (value, ratio, id) {
 					    return value + '<br/>' + (value * 100 / graphpbgServicios.total).toFixed(2) + '%';

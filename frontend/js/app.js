@@ -214,6 +214,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	// setea los evntos sobre el mapa
 	function onEachFeatureA(feature, layer) {
+ 		layer.bindLabel(feature.properties['name'], { 'noHide': true });
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlightA,
@@ -223,6 +224,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	// setea los evntos sobre el mapa
 	function onEachFeatureB(feature, layer) {
+ 		layer.bindLabel(feature.properties['barrio'], { 'noHide': true });
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlightB,
@@ -311,12 +313,14 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		geojsonA = L.geoJson(a, {
 			style: styleA,
 			onEachFeature: onEachFeatureA
-		}).addTo(map);
+		})
+		.addTo(map);
 
 		geojsonB = L.geoJson(b, {
 			style: styleB,
 			onEachFeature: onEachFeatureB
-		}).addTo(map);
+		})
+		.addTo(map);
 
 	}
 
@@ -332,9 +336,11 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 							"</div>";
 
+		list = _.map(_.sortByOrder(list, ['properties.name'], ['asc']), _.values);
+
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
-					"	<label><input id='area_" + list[i].properties.id + "' type='checkbox' value='" + list[i].properties.id + "' checked disabled onclick='setAreas();'>" + list[i].properties[name_field] + "</label>" +
+					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked disabled onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
 					"</div>";
 		}
 
@@ -428,9 +434,11 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 					"	<label><input id='barrio_ninguno' type='checkbox' value='Ninguno' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 					"</div>";
 
+		list = _.map(_.sortByOrder(list, ['properties.barrio'], ['asc']), _.values);
+
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
-					"	<label><input id='barrio_" + list[i].properties.id + "' type='checkbox' value='" + list[i].properties.id + "' checked disabled onclick='setBarrios();'>" + list[i].properties[name_field] + "</label>" +
+					"	<label><input id='barrio_" + list[i][2].id + "' type='checkbox' value='" + list[i][2].id + "' checked disabled onclick='setBarrios();'>" + list[i][2][name_field] + "</label>" +
 					"</div>";
 		}
 
