@@ -30,7 +30,7 @@ html, body {
 }
 
 .map-padding-left {
-    padding-left: 200px !important;
+    padding-left: 250px !important;
 }
 
 .map-container {
@@ -122,8 +122,8 @@ html, body {
 }
 
 .panel-left {
-  width: 200px;
-  left: -200px;
+  width: 250px;
+  left: -250px;
   transition: left 0.3s ease-in-out 0s;
   -webkit-transition: left 0.3s ease-in-out 0s;
   -moz-transition: left 0.3s ease-in-out 0s;
@@ -239,6 +239,20 @@ html, body {
 
 .blocker {
   z-index: 999999 !important;
+}
+
+.sub-check {
+  padding-left: 12px;  
+  display: none;
+}
+
+.btn-expand {
+  float:right;
+}
+
+.btn-contract {
+  float:right;
+  display: none;
 }
 
 #ayuda-content {

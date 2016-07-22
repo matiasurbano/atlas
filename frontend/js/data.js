@@ -1,7 +1,7 @@
 
 
 function getDataCsv() {
-	return "" +
+    var a = "" +
         "tipo_region,codigo,region,cordon,conurbano,cuencas,superficie,poblacion_2001,poblacion_2010,creacion,densidad,indice_masculinidad,vivienda_casa_a,vivienda_casa_b,vivienda_casa_ni,vivienda_casilla,vivienda_rancho,vivienda_departamento,vivienda_inquilinato,vivienda_hotel,vivienda_local,vivienda_movil,vivienda_calle,vivienda_calmat_1,vivienda_calmat_2,vivienda_calmat_3,vivienda_calmat_4,vivienda_calmat_ni,vivienda_satisfactoria,vivienda_basica,vivienda_insuficiente,vivienda_servicio_ni,hogares,hogares_nbi_con,hacinamiento_no,hacinamiento_critico,hacinamiento_ni,pea_ocupada,pea_desocupada,no_pea,pbg_a,pbg_b,pbg_c,pbg_d,pbg_e,pbg_f,pbg_g,pbg_h,pbg_i,pbg_j,pbg_k,pbg_l,pbg_m,pbg_n,pbg_o,pbg_p\r\n" +
         "partido,28,Almirante Brown,2,sur,matanza-riachuelo,129.33,515556,552902,30/09/1973,4275.13,95.6,98257,23422,10974,6116,1287,15537,350,17,213,31,14,77534,17142,8413,572,52543,21400,27872,93342,13590,156918,16423,123030,6864,27024,262451,19966,131773,446,105,3649,605821,45936,88249,341235,86274,358733,61045,509021,52361,115964,67368,95363,49603\r\n" +
         "partido,35,Avellaneda,1,sur,matanza-riachuelo,52.48,328980,342677,07/04/1852,6529.67,89.94,64254,5735,11383,1274,558,36973,663,105,341,6,15,84095,34670,21904,1945,-21322,70328,15032,18301,17631,113142,6562,97699,2481,12962,173364,11545,87169,1044,128,482,2270060,196952,104381,247124,35231,378472,91672,392756,66434,105300,104155,112480,19575\r\n" +
@@ -30,6 +30,12 @@ function getDataCsv() {
         "provincia,1,Buenos Aires,No corresponde,No corresponde,No corresponde,307.571,13827203,15625084,febrero 1820,50801.55,94.8,3199574,515262,0,109551,30077,542445,16569,2222,8117,1376,No informa,2969758,873678,524448,57309,0,2067081,632834,1725278,0,4789484,390171,3891877,172325,725282,7623930,489510,3774730,70835,1812,14124,25253817,1568002,2263487,7945460,1173425,7130588,1233226,9690371,1490977,2507956,1636961,1923264,764345\r\n" +
         "pais,1,Argentina,No corresponde,No corresponde,No corresponde,3745.997,36260130,40117096,No corresponde,10709.32,94.8,7540500,1390034,1690332,235081,226644,2615916,67765,22802,18369,4682,2346,7085330,2467717,1300809,463651,2496964,5933597,1959288,3424622,2496964,12171675,1110883,9901600,480914,1789161,18643267,1174153,10406909,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde,No corresponde"
     ;
+
+    // arreglo el nombre de la cuenca
+    //a = a.replace(",de la zona sur,", ",zona-sur,");
+    a = a.replace(/,de la zona sur,/g, ',zona-sur,');
+
+    return a;
 }
 
 // This will parse a delimited string into an array of
