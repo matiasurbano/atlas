@@ -445,7 +445,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        //width: 100 // this makes bar width 100px
 		    },
 		    color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		 //       pattern: ['#05AFF2', '#F28850', '#05C7F2', '#F26E50', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
@@ -480,6 +481,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		                return '';
 		            }
 		        }
+		    },
+		    color: {
+		        //pattern: ['#05AFF2', '#F28850', '#05C7F2', '#F26E50', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
@@ -518,8 +523,12 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				                format: function (x) { return x / 1000; }
 			            	}
 		            },
-		          rotated: true
-		        },
+		        rotated: true
+	        },
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#05C7F2', '#F26E50', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
 		    tooltip: {
 		        format: {
 		            title: function (d) {
@@ -530,10 +539,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 						return (value).toFixed(0);
 		            }
 		        }
-    		},		        
-			color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
-		    }
+    		}
 	    });
 
 		graphViviendaTipo = c3.generate({
@@ -562,11 +568,12 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				                format: function (x) { return Math.round(x / 1000000) + "M"; }
 				                */
 			            	}		            
-		            },
-		          rotated: true
 		        },
-			color: {
-		        pattern: ['#1f77b4', '#aec7e8', '#ff7f0e', '#ffbb78', '#2ca02c', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+	        	rotated: true
+	        },
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#05C7F2', '#F26E50', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
@@ -605,9 +612,6 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
 		        }	
 		    },
-		    color: {
-		        pattern: ['#1F77B4','#3481B7','#5492BD','#1F77B4']
-		    },		    
     		axis : {
         		x : {
             		type : 'category',
@@ -617,6 +621,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
             		}
         		}
     		},
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
     		tooltip: {
 		        format: {
 		            title: function (d) {
@@ -649,8 +657,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 		    },
 		    color: {
-		        pattern: ['#1F77B4','#3481B7','#5492BD']
-		    },		    
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+
+		    },
 		    pie: {
 		        label: {
 		            format: function (value, ratio, id) {
@@ -681,13 +691,14 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ['Activa', 150 ],
 		            ['Inactiva', 180]
 		        ],
-		        type: 'bar',
+		        type: 'bar'
+		        /*,
 		        colors: {
 		        	'Activa': '#1F77B4',
-							'Ocupada': '#1F77B4',
-							'Desocupada': '#3481B7',
-							'Inactiva': '#AEC7E8'
-		    		}
+//					'Ocupada': '#1F77B4',
+//					'Desocupada': '#3481B7',
+					'Inactiva': '#AEC7E8'
+	    		}*/
 		    },
     		axis : {
         		x : {
@@ -710,6 +721,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
 		        }
 		        //width: 100 // this makes bar width 100px
+		    },
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
     		tooltip: {
 		        format: {
@@ -747,6 +762,10 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            }
 		        }
 		    },
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
 		    tooltip: {
 		        format: {
 		            title: function (d) { 
@@ -771,21 +790,22 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 					['x', 'Ocupada', 'Desocupada ', 'Inactiva'],
 					['Cantidad', 50, 20, 10]
 				],
-				type: 'bar',
-        colors: {
-					'x': '#FFFFFF',
-					'Ocupada': '#1F77B4',
-					'Desocupada': '#3481B7',
-					'Inactiva': '#AEC7E8'
-    		},
-        color: function(inColor, data) {
-            var colors = ['#1F77B4','#FABF62', '#AEC7E8'];
-            if(data.index !== undefined) {
-                return colors[data.index];
-            }
-
-            return inColor;
-        }
+				type: 'bar'
+/*				,
+		        colors: {
+							'x': '#FFFFFF',
+							'Ocupada': '#05AFF2',
+							'Desocupada': '#F28850',
+							'Inactiva': '#6AA373'
+		    		},
+		        color: function(inColor, data) {
+		            var colors = ['#05AFF2','#F28850', '#6AA373'];
+		            if(data.index !== undefined) {
+		                return colors[data.index];
+		       		}
+		            return inColor;
+        		}
+  */      		
 			},
 			axis: {
 					x: {
@@ -799,11 +819,16 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 			            	}		            
 		            },		          
 		          rotated: true
-		        },
+	        },
+		    color: {
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		    },
     		tooltip: {
 		        format: {
 		            title: function (d) {
-		            	return '2010: Ocupada'; 
+		            	var title = ['Ocupada', 'Desocupada', 'Inactiva'];
+		            	return '2010: ' + title[d]; 
 		            },
 					value: function (value, ratio, id) {
 					    return ((value * 100) / graphPeaDistribucion.total).toFixed(1) + '%<br/> ' + (value * 1000000).toFixed(0);
@@ -839,7 +864,6 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
             		}
         		}
     		},		    
-
 		    bar: {
 		        width: {
 		            ratio: 0.8 // this makes bar width 50% of length between ticks
@@ -847,7 +871,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        //width: 100 // this makes bar width 100px
 		    },
 		    color: {
-		        pattern: ['#1f77b4', '#aec7e8']
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
@@ -903,7 +928,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        	rotated: true
 		        },
 		    color: {
-		        pattern: ['#1f77b4']
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
@@ -967,7 +993,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		          	rotated: true
 		        },
 		    color: {
-		        pattern: ['#aec7e8']
+//		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
+		        pattern: ['#245D82', '#62ACDB', '#F69468', '#87585F', '#522537', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
 		    },
 		    tooltip: {
 		        format: {
