@@ -66,7 +66,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 
 	getTabSelected = function() {
-		return $('.nav-tabs .active').text().trim();
+		//return $('.nav-tabs .active').text().trim();
+		return $('#myTab .active').attr('name');
 	}
 
 	getMapSelected = function(props) {
@@ -87,7 +88,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 						{name : "Viviendas", value : props.viv},
 						{name : "Habitantes", value : props.hab}
 					];
-		if (tabSelected === 'Población')
+		if (tabSelected === 'poblacion')
 			return [
 						{name : "Tipo de Dato", value : "Población"},
 						{name : "Nombre", value : props["name"]},
@@ -96,7 +97,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 						{name : "Densidad", value : props["densidad"]},
 						{name : "Masculinidad", value : props["indice-masculinidad"]}
 					];
-		else if (tabSelected === 'Vivienda')
+		else if (tabSelected === 'vivienda')
 			return [
 						{name : "Tipo de Dato", value : "Vivienda"},
 						{name : "Nombre", value : props["name"]},
@@ -110,7 +111,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 						{name : "Movil", value : props["vivienda-movil"]},
 						{name : "Calle", value : props["vivienda-calle"]}
 					];
-		else if (tabSelected === 'PEA')
+		else if (tabSelected === 'pea')
 			return [
 						{name : "Tipo de Datos", value : "PEA"},
 						{name : "Nombre", value : props["name"]},
@@ -118,7 +119,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 						{name : "Desocupada", value : props["pea-desocupada"]},
 						{name : "Inactiva", value : props["no-pea"]}
 					];
-		else if (tabSelected === 'PBG')
+		else if (tabSelected === 'pbg')
 			return [
 						{name : "Tipo de Dato", value : "PBG"},
 						{name : "Nombre", value : props["name"]},
@@ -337,7 +338,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 							"</div>";
 
-		list = _.map(_.sortByOrder(list, ['properties.name'], ['asc']), _.values);
+		//list = _.map(_.sortByOrder(list, ['properties.name'], ['asc']), _.values);
+		list = _.map(list, _.values);
 
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
@@ -437,29 +439,6 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		//drawAreas(infoAreas, infoBarrios);
 	}
 
-/*
-	function barriosHtml(list, name) {
-		var name_field = name || "name";
-
-		var html = "<div class='checkbox'>" +
-					"	<label><input id='barrio_todos' type='checkbox' value='Todos' checked onclick='barriosDisabled(" + '"todos"' + ");'>Todos</label>" +
-					"</div>";
-
-		html += "<div class='checkbox'>" +
-					"	<label><input id='barrio_ninguno' type='checkbox' value='Ninguno' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
-					"</div>";
-
-		list = _.map(_.sortByOrder(list, ['properties.barrio'], ['asc']), _.values);
-
-		for (var i = 0; i < list.length; i++) {
-			html +=	"<div class='checkbox'>" +
-					"	<label><input id='barrio_" + list[i][2].id + "' type='checkbox' value='" + list[i][2].id + "' checked disabled onclick='setBarrios();'>" + list[i][2][name_field] + "</label>" +
-					"</div>";
-		}
-
-		return html;
-	}
-*/
 
 	function barriosHtml(areaList, list, name) {
 		var name_field = name || "name";
@@ -467,12 +446,14 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		var areaCodigo = "";
 
 		var html = "<div class='checkbox'>" +
-					"	<label><input id='barrio_todos' type='checkbox' value='Todos' checked onclick='barriosDisabled(" + '"todos"' + ");'>Todos</label>" +
+					"	<a href='javascript:;' onclick='barriosDisabled(" + '"todos"' + ");'>Todos</a>" +
 					"</div>";
+	//				"	<label><input id='barrio_todos' type='checkbox' value='Todos' checked onclick='barriosDisabled(" + '"todos"' + ");'>Todos</label>" +
 
 		html += "<div class='checkbox'>" +
-					"	<label><input id='barrio_ninguno' type='checkbox' value='Ninguno' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
+					"	<a href='javascript:;' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</a>" +
 					"</div>";
+	//				"	<label><input id='barrio_ninguno' type='checkbox' value='Ninguno' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 
 		for (var i = 0; i < areaList.length; i++) {
 //			barrioList = getBarriosArea(list, areaList[i]);
@@ -486,7 +467,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 				html +=	"<div class='checkbox'>" +
 						"	<label >" +
-						"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areaList[i].properties.id + "' checked disabled onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
+						"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areaList[i].properties.id + "' checked onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
 								areaList[i].properties.name + 
 						"	</label>" +
 						"	<a class='btn-expand' id='lnk-areabarrio-" + areaCodigo + "-down' onclick='barriosVisible(" + '"' + areaCodigo + '", "down"' + ")' href='#'>" +
@@ -496,12 +477,18 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 						"   	<span class='glyphicon glyphicon-menu-up' aria-hidden='true'></span>" +
 						"	</a>" +
 						"</div>";
+
+//						"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areaList[i].properties.id + "' checked disabled onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
+
 				html += "<div id='div-areabarrio-" + areaCodigo + "' class='sub-check'>"
 
 				for (var j = 0; j < barrioList.length; j++) {
 					html +=	"<div class='checkbox'>" +
-							"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked disabled onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
+							"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
 							"</div>";
+
+							//"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked disabled onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
+
 				}
 
 				html += "</div>";	// cierra el divArea_???
@@ -545,6 +532,10 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 												);
 				  });
 
+		// ordeno los barrios por nombre
+		barriosFiltered = _.sortByOrder(barriosFiltered, ['properties.barrio'], ['asc']);
+
+
 		return barriosFiltered;
 	}
 
@@ -558,19 +549,24 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		var areaId = "";
 
 		// click Todos => uncheck Ninguno
-		if(option === 'todos')
+		/*
+		if (option === 'todos')
 			$('#barrio_ninguno')[0].checked = false;
 		else if(option === 'ninguno')
 			$('#barrio_todos')[0].checked = false;
 
 		todosCheck = $('#barrio_todos')[0].checked;
 		ningunoCheck = $('#barrio_ninguno')[0].checked;
+		*/
+		todosCheck = (option === 'todos');
+		ningunoCheck = (option !== 'todos');
 
 		for (var i = 0; i < allAreas.length; i++) {
 			if (allAreas[i].properties["contieneBarrios"]) {
 				areaId = '#chk-areabarrio-' + allAreas[i].properties.codigo;
 
-				$(areaId)[0].disabled = (todosCheck || ningunoCheck);
+				//$(areaId)[0].disabled = (todosCheck || ningunoCheck);
+				$(areaId)[0].disabled = false;
 
 				if (todosCheck)
 					$(areaId)[0].checked = true;
@@ -584,7 +580,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			barrioId = '#chk-barrio-' + allBarrios[i].properties.codigo;
 
 			// no se porque carajo me lo toma como un array de controles...
-			$(barrioId)[0].disabled = (todosCheck || ningunoCheck);
+			//$(barrioId)[0].disabled = (todosCheck || ningunoCheck);
+			$(barrioId)[0].disabled = false;
 
 			if (todosCheck)
 				$(barrioId)[0].checked = true;
