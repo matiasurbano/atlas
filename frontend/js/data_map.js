@@ -4244,6 +4244,15 @@ function setDataBarrios(list) {
 	// Codigo = 625_01 => 625 => split("_")[0]
 	for (var i = 0; i < list.features.length; i++) {
 		list.features[i].properties.partido = list.features[i].properties.codigo.split('_')[0];
+		if (list.features[i].properties.hog === 1)
+			list.features[i].properties.hog = "SD";
+
+		if (list.features[i].properties.viv === 1)
+			list.features[i].properties.viv = "SD";
+
+		if (list.features[i].properties.hab === 1)
+			list.features[i].properties.hab = "SD";
+
 	}
 
 }

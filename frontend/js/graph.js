@@ -179,11 +179,22 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				columns: [
 					['x', 'Casa', 'Rancho', 'Casilla', 'Departamento', 'Pieza en Inq.', 'Pieza en hotel', 'Local', 'Movil'],
 					['Cantidad', casa, rancho, casilla, departamento, inquilinato, hotel, local, movil]
-				],
+				]
+				//,
+				//axis: {
+				//	y: {
+				//		values: [0.5, 1, 1.5, 2, 2.5, .3]
+				//	}
+				//}
 			}
 		);
 
 		graphViviendaTipo.total = total;
+
+		console.log(total);
+		//console.dir(graphViviendaTipo.axis.y.tick.values);
+
+		//graphViviendaTipo.axis.y.tick.values = []
 
 	}
 
@@ -567,7 +578,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 				                /*
 				                format: function (x) { return Math.round(x / 1000000) + "M"; }
 				                */
-			            	}		            
+			            	}
 		        },
 	        	rotated: true
 	        },
