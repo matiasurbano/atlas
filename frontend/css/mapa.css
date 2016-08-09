@@ -85,12 +85,13 @@ html, body {
 
 
 /* Paneles laterales */
+/*  height: 100%;*/
 .panel {
   border-radius:0px;
   background: #FFFF;
   display: block;
-  height: 100%;
   overflow: auto;
+  height: 100%;
   position: fixed;
   top: 50px;
   border: 0px;

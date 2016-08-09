@@ -216,6 +216,14 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	// setea los evntos sobre el mapa
 	function onEachFeatureA(feature, layer) {
+/*
+		var dataSelected = getDataSelected(feature.properties);
+		var htmlData = "";
+
+		_.forEach(dataSelected, function(data){
+			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
+		});
+*/
  		layer.bindLabel(feature.properties['name'], { 'noHide': true });
 		layer.on({
 			mouseover: highlightFeature,
@@ -338,7 +346,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 							"</div>";
 
-		//list = _.map(_.sortByOrder(list, ['properties.name'], ['asc']), _.values);
+		//list = _.map(_.sort	ByOrder(list, ['properties.name'], ['asc']), _.values);
 		list = _.map(list, _.values);
 
 		for (var i = 0; i < list.length; i++) {
