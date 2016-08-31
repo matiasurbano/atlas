@@ -230,16 +230,19 @@
 			});
 
 			$('#myTab a').click(function (e) {
-				e.preventDefault()
-				$(this).tab('show')
+				e.preventDefault();
+				$(this).tab('show');
+
+				// seteo las areas en el mapa
+				drawMap();
 			})
 
-		    $('#poblacion').tooltipster({
+/*		    $('#poblacion').tooltipster({
 		        content: $('\
 		        	 asdasd\
 		        	')
 		    });
-
+*/
 		});
 	</script>
 

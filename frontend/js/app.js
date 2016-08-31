@@ -33,6 +33,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 
 	// control that shows state info on hover
+	/*
 	var info = L.control({
 		position:'bottomright'
 	});
@@ -45,6 +46,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 
 	info.update = function (props) {
+		*/
+/*
 		var dataSelected = getDataSelected(props);
 		var htmlData = "";
 
@@ -62,7 +65,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		else {
 				this._div.innerHTML = (props ? htmlData :  '' );
 		}
-	};
+		*/
+	//};
 
 
 	getTabSelected = function() {
@@ -83,7 +87,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		if (getMapSelected(props) === "Barrio")
 			return [
 						{name : "Tipo", value : props.tipo},
-						{name : "Barrio", value : props.barrio},
+//						{name : "Barrio", value : props.barrio},
 						{name : "Hogares", value : props.hog},
 						{name : "Viviendas", value : props.viv},
 						{name : "Habitantes", value : props.hab}
@@ -91,7 +95,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		if (tabSelected === 'poblacion')
 			return [
 						{name : "Tipo de Dato", value : "Población"},
-						{name : "Nombre", value : props["name"]},
+//						{name : "Nombre", value : props["name"]},
 						{name : "Censo 2001", value : props["poblacion-2001"]},
 						{name : "Censo 2010", value : props["poblacion-2010"]},
 						{name : "Densidad", value : props["densidad"]},
@@ -100,7 +104,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		else if (tabSelected === 'vivienda')
 			return [
 						{name : "Tipo de Dato", value : "Vivienda"},
-						{name : "Nombre", value : props["name"]},
+//						{name : "Nombre", value : props["name"]},
 						{name : "Casas", value : Number(props["vivienda-casa-a"]) + Number(props["vivienda-casa-b"]) + Number(props["vivienda-casa-ni"])},
 						{name : "Casillas", value : props["vivienda-casilla"]},
 						{name : "Ranchos", value : props["vivienda-rancho"]},
@@ -114,7 +118,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		else if (tabSelected === 'pea')
 			return [
 						{name : "Tipo de Datos", value : "PEA"},
-						{name : "Nombre", value : props["name"]},
+//						{name : "Nombre", value : props["name"]},
 						{name : "Ocupada", value : props["pea-ocupada"]},
 						{name : "Desocupada", value : props["pea-desocupada"]},
 						{name : "Inactiva", value : props["no-pea"]}
@@ -122,7 +126,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		else if (tabSelected === 'pbg')
 			return [
 						{name : "Tipo de Dato", value : "PBG"},
-						{name : "Nombre", value : props["name"]},
+//						{name : "Nombre", value : props["name"]},
 						{name : "Bienes", value : Number(props["pbg-a"]) + Number(props["pbg-b"]) + Number(props["pbg-c"]) + Number(props["pbg-d"]) + Number(props["pbg-e"]) + Number(props["pbg-f"])},
 						{name : "Servicios", value : Number(props["pbg-g"]) + Number(props["pbg-h"]) + Number(props["pbg-i"]) + Number(props["pbg-j"]) + Number(props["pbg-k"]) + Number(props["pbg-l"]) + Number(props["pbg-m"]) + Number(props["pbg-n"]) + Number(props["pbg-o"]) + Number(props["pbg-p"])}
 					];
@@ -131,7 +135,19 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	}
 
-	info.addTo(map);
+	getHtmlProperties = function(props) {
+
+		var dataSelected = getDataSelected(props);
+		var htmlData = "";
+
+		_.forEach(dataSelected, function(data){
+			htmlData += "<span style='font-weight: normal;font-size:100%;'>" + data.name + "</span>: " + data.value + "<br/>";
+		});		
+
+		return htmlData;
+	}
+
+	//info.addTo(map);
 
 
 	// get color depending on population density value
@@ -194,19 +210,19 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			//layer.bringToFront();
 		}
 
-		info.update(layer.feature.properties);
+		//info.update(layer.feature.properties);
 	}
 
 	// restaura el color de la region sobre la cual pierde el foco
 	function resetHighlightA(e) {
 		geojsonA.resetStyle(e.target);
-		info.update();
+		//info.update();
 	}
 
 	// restaura el color de la region sobre la cual pierde el foco
 	function resetHighlightB(e) {
 		geojsonB.resetStyle(e.target);
-		info.update();
+		//info.update();
 	}
 
 	// encuadra la seleccion en el cuadro de visualizacion
@@ -224,7 +240,12 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
 		});
 */
- 		layer.bindLabel(feature.properties['name'], { 'noHide': true });
+
+//		var tabSelected = getTabSelected();
+		var htmlProps = getHtmlProperties(feature.properties);
+		var title = (feature.properties['type'] === "partido" ? "Partido " : "");
+
+ 		layer.bindLabel( "<span style='font-size:120%;'>" + title + feature.properties['name'] + "</span><br/>" + htmlProps, { 'noHide': true });
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlightA,
@@ -234,7 +255,9 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	// setea los evntos sobre el mapa
 	function onEachFeatureB(feature, layer) {
- 		layer.bindLabel(feature.properties['barrio'], { 'noHide': true });
+		var htmlProps = getHtmlProperties(feature.properties);
+
+ 		layer.bindLabel("<span style='font-size:120%;'>" + "Barrio " + feature.properties['barrio'] + "</span><br/>" + htmlProps, { 'noHide': true });
 		layer.on({
 			mouseover: highlightFeature,
 			mouseout: resetHighlightB,
