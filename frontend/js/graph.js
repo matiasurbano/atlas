@@ -191,7 +191,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 
 		graphViviendaTipo.total = total;
 
-		console.log(total);
+		//console.log(total);
 		//console.dir(graphViviendaTipo.axis.y.tick.values);
 
 		//graphViviendaTipo.axis.y.tick.values = []
@@ -481,10 +481,11 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ['Hombres', 30],
 		            ['Mujeres', 120],
 		        ],
-		        type : 'pie',
-		        onclick: function (d, i) { console.log("onclick", d, i); },
-		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		        type : 'pie'
+		        //,
+		        //onclick: function (d, i) { console.log("onclick", d, i); },
+		        //onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+		        //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 		    },
 		    pie: {
 		        label: {
@@ -662,10 +663,11 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ['Basica', 60],
 		            ['Insuficiente', 120],
 		        ],
-		        type : 'pie',
-		        onclick: function (d, i) { console.log("onclick", d, i); },
-		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		        type : 'pie'
+		        //,
+		        //onclick: function (d, i) { console.log("onclick", d, i); },
+		        //onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+		        //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 		    },
 		    color: {
 //		        pattern: ['#05AFF2', '#F28850', '#6AA373', '#FFC85B', '#D4D9C5', '#98df8a', '#d62728', '#ff9896', '#9467bd', '#c5b0d5', '#8c564b', '#c49c94', '#e377c2', '#f7b6d2', '#7f7f7f', '#c7c7c7', '#bcbd22', '#dbdb8d', '#17becf', '#9edae5']
@@ -761,10 +763,11 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            ['Ocupada', 30],
 		            ['Desocupada', 60]
 		        ],
-		        type : 'pie',
-		        onclick: function (d, i) { console.log("onclick", d, i); },
-		        onmouseover: function (d, i) { console.log("onmouseover", d, i); },
-		        onmouseout: function (d, i) { console.log("onmouseout", d, i); }
+		        type : 'pie'
+		        //,
+		        //onclick: function (d, i) { console.log("onclick", d, i); },
+		        //onmouseover: function (d, i) { console.log("onmouseover", d, i); },
+		        //onmouseout: function (d, i) { console.log("onmouseout", d, i); }
 		    },
 		    pie: {
 		        label: {
