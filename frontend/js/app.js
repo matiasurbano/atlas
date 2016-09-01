@@ -360,7 +360,7 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 
 	function areasHtml(list, name) {
 		var name_field = name || "name";
-
+/*
 		var html = "<div class='checkbox'>" +
 					"	<label><input id='area_todos' type='checkbox' value='Todos' checked onclick='areasDisabled("+ '"todos"' +");'>Todos</label>" +
 					"</div>";
@@ -368,14 +368,25 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		html += "<div class='checkbox'>" +
 							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
 							"</div>";
+*/
+
+		var html = "<div class='checkbox'>" +
+					"	<a href='javascript:;' onclick='areasDisabled(" + '"todos"' + ");'>Todos</a>" +
+					"</div>";
+
+		html += "<div class='checkbox'>" +
+					"	<a href='javascript:;' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</a>" +
+					"</div>";
+
 
 		//list = _.map(_.sort	ByOrder(list, ['properties.name'], ['asc']), _.values);
 		list = _.map(list, _.values);
 
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
-					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked disabled onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
+					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
 					"</div>";
+//					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked disabled onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
 		}
 
 		return html;
@@ -410,17 +421,20 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		var todosCheck = false;
 		var ningunoCheck = false;
 
-		if(option === 'todos')
+/*		if(option === 'todos')
 			$('#area_ninguno')[0].checked = false;
 		else if(option === 'ninguno')
 			$('#area_todos')[0].checked = false;
+*/
+//		todosCheck = $('#area_todos')[0].checked;
+//		ningunoCheck = $('#area_ninguno')[0].checked;
 
-		todosCheck = $('#area_todos')[0].checked;
-		ningunoCheck = $('#area_ninguno')[0].checked;
+		todosCheck = option === 'todos';
+		ningunoCheck = option === 'ninguno';
 
 		for (var i = 0; i < allAreas.length; i++) {
 			// no se porque carajo me lo toma como un array de controles...
-			$('#area_' + allAreas[i].properties.id)[0].disabled = (todosCheck || ningunoCheck);
+			//$('#area_' + allAreas[i].properties.id)[0].disabled = (todosCheck || ningunoCheck);
 
 			if (todosCheck)
 				$('#area_' + allAreas[i].properties.id)[0].checked = true;
