@@ -20,7 +20,8 @@ var infoBarrios = [];
 var geojsonA;	// Geojson de Area
 var geojsonB;	// Geojson de Barrio
 
-var map = L.map('map').setView([-34.605651, -58.441538], 9);
+//var map = L.map('map').setView([-34.605651, -58.441538], 9);
+var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	//L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roadsg/x={x}&y={y}&z={z}', {
 	L.tileLayer('http://korona.geog.uni-heidelberg.de/tiles/roads/x={x}&y={y}&z={z}', {
@@ -79,6 +80,8 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 	}
 
 	getDataSelected = function(props) {
+		var casas;
+		var bienes, servicios;
 
 		if (props === undefined) return [];
 
@@ -96,41 +99,49 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 			return [
 						{name : "Tipo de Dato", value : "Población"},
 //						{name : "Nombre", value : props["name"]},
-						{name : "Censo 2001", value : props["poblacion-2001"]},
-						{name : "Censo 2010", value : props["poblacion-2010"]},
-						{name : "Densidad", value : props["densidad"]},
-						{name : "Masculinidad", value : props["indice-masculinidad"]}
+						{name : "Censo 2001", value : numberFormat(props["poblacion-2001"], 0)},
+						{name : "Censo 2010", value : numberFormat(props["poblacion-2010"], 0)},
+						{name : "Densidad", value : numberFormat(props["densidad"], 2)},
+						{name : "Masculinidad", value : numberFormat(props["indice-masculinidad"], 2)}
 					];
-		else if (tabSelected === 'vivienda')
+		else if (tabSelected === 'vivienda') {
+			casas = Number(props["vivienda-casa-a"]) + Number(props["vivienda-casa-b"]) + Number(props["vivienda-casa-ni"]);
+
 			return [
 						{name : "Tipo de Dato", value : "Vivienda"},
 //						{name : "Nombre", value : props["name"]},
-						{name : "Casas", value : Number(props["vivienda-casa-a"]) + Number(props["vivienda-casa-b"]) + Number(props["vivienda-casa-ni"])},
-						{name : "Casillas", value : props["vivienda-casilla"]},
-						{name : "Ranchos", value : props["vivienda-rancho"]},
-						{name : "Deptos", value : props["vivienda-departamento"]},
-						{name : "Inquilinato", value : props["vivienda-inquilinato"]},
-						{name : "Hotel", value : props["vivienda-hotel"]},
-						{name : "Local", value : props["vivienda-local"]},
-						{name : "Movil", value : props["vivienda-movil"]},
-						{name : "Calle", value : props["vivienda-calle"]}
+						{name : "Casas", value : numberFormat(casas, 0)},
+						{name : "Casillas", value : numberFormat(props["vivienda-casilla"], 0)},
+						{name : "Ranchos", value : numberFormat(props["vivienda-rancho"], 0)},
+						{name : "Deptos", value : numberFormat(props["vivienda-departamento"], 0)},
+						{name : "Inquilinato", value : numberFormat(props["vivienda-inquilinato"], 0)},
+						{name : "Hotel", value : numberFormat(props["vivienda-hotel"], 0)},
+						{name : "Local", value : numberFormat(props["vivienda-local"], 0)},
+						{name : "Movil", value : numberFormat(props["vivienda-movil"], 0)},
+						{name : "Calle", value : numberFormat(props["vivienda-calle"], 0)}
 					];
-		else if (tabSelected === 'pea')
+
+		} else if (tabSelected === 'pea')
 			return [
 						{name : "Tipo de Datos", value : "PEA"},
 //						{name : "Nombre", value : props["name"]},
-						{name : "Ocupada", value : props["pea-ocupada"]},
-						{name : "Desocupada", value : props["pea-desocupada"]},
-						{name : "Inactiva", value : props["no-pea"]}
+						{name : "Ocupada", value : numberFormat(props["pea-ocupada"], 0)},
+						{name : "Desocupada", value : numberFormat(props["pea-desocupada"], 0)},
+						{name : "Inactiva", value : numberFormat(props["no-pea"], 0)}
 					];
-		else if (tabSelected === 'pbg')
+
+		else if (tabSelected === 'pbg') {
+			bienes = Number(props["pbg-a"]) + Number(props["pbg-b"]) + Number(props["pbg-c"]) + Number(props["pbg-d"]) + Number(props["pbg-e"]) + Number(props["pbg-f"]);
+			servicios = Number(props["pbg-g"]) + Number(props["pbg-h"]) + Number(props["pbg-i"]) + Number(props["pbg-j"]) + Number(props["pbg-k"]) + Number(props["pbg-l"]) + Number(props["pbg-m"]) + Number(props["pbg-n"]) + Number(props["pbg-o"]) + Number(props["pbg-p"]);
+
 			return [
 						{name : "Tipo de Dato", value : "PBG"},
 //						{name : "Nombre", value : props["name"]},
-						{name : "Bienes", value : Number(props["pbg-a"]) + Number(props["pbg-b"]) + Number(props["pbg-c"]) + Number(props["pbg-d"]) + Number(props["pbg-e"]) + Number(props["pbg-f"])},
-						{name : "Servicios", value : Number(props["pbg-g"]) + Number(props["pbg-h"]) + Number(props["pbg-i"]) + Number(props["pbg-j"]) + Number(props["pbg-k"]) + Number(props["pbg-l"]) + Number(props["pbg-m"]) + Number(props["pbg-n"]) + Number(props["pbg-o"]) + Number(props["pbg-p"])}
+						{name : "Bienes", value : numberFormat(bienes, 0)},
+						{name : "Servicios", value : numberFormat(servicios, 0)}
 					];
-		else 
+
+		} else 
 			return [];
 
 	}
@@ -694,6 +705,10 @@ var map = L.map('map').setView([-34.605651, -58.441538], 9);
 		//drawMap();
 	}
 
+	function numberFormat(value, n, x) {
+	    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
+	    return parseFloat(value).toFixed(Math.max(0, ~~n)).replace(new RegExp(re, 'g'), '$&,');
+	};
 
 	$( document ).ready(function() {
 		setAreasSelect();
