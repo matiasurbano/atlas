@@ -4164,7 +4164,7 @@ function getBarrios() {
 		            "tipo":"Villa",
 		            "etiqueta":"6",
 		            "barrio":"Santa Rosa",
-		            "codigo":"756_06"
+		            "codigo":"756_06a"
 		         }
 		      },
 		      {

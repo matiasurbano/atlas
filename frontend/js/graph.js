@@ -463,7 +463,8 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        format: {
 		            //title: function (d) { return 'Habitantes'; },
 		            value: function (value, ratio, id) {
-						return (value * 1000000).toFixed(0);
+						//return (value * 1000000).toFixed(0);
+						return numberFormat(value * 1000000, 0);
 		            }
 		        }
     		}
@@ -502,7 +503,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		        format: {
 		            title: function (d) { return ''; },
 		            value: function (value, ratio, id) {
-									return value + '%'; //<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
+									return numberFormat(value, 2) + ' %'; //<br>' + (value * graphMasculinidad.poblacion_2010 / 100).toFixed(0);
 		            }
 		        }
     		}		    
@@ -548,7 +549,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return 'Hab/Km<sup>2</sup> - ' + titx[d]; 
 		            },
 		            value: function (value, ratio, id) {
-						return (value).toFixed(0);
+						return numberFormat(value, 0);
 		            }
 		        }
     		}
@@ -594,7 +595,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010: ' + titx[d];
 		            },
 					value: function (value, ratio, id) {
-					    return (value * 1000000).toFixed(0) + '<br/>' + ((value * 100) / graphViviendaTipo.total).toFixed(2) + "%";
+					    return numberFormat(value * 1000000, 0) + '<br/>' + numberFormat((value * 100) / graphViviendaTipo.total, 2) + " %";
 		            }
 		        }
 		    },
@@ -643,7 +644,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010: Cantidad de viviendas'; 
 		            },
 		            value: function (value, ratio, id) {
-									return (value * 1000).toFixed(0);
+									return numberFormat(value * 1000, 0);
 		            }
 		        }
     		}
@@ -687,7 +688,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010';
 		            },	
 					value: function (value, ratio, id) {
-					    return value + '%'; // <br/> ' + graphViviendaServBas.values[id].toFixed(0);
+					    return numberFormat(value, 2) + ' %'; // <br/> ' + graphViviendaServBas.values[id].toFixed(0);
 		            }
 		        }
 		    }
@@ -745,7 +746,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010: Cantidad de poblacion'; 
 		            },
 		            value: function (value, ratio, id) {
-						return (value * 1000000).toFixed(0);
+						return numberFormat(value * 1000000, 0);
 		            }
 		        }
     		}
@@ -786,7 +787,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010';
 		            },
 					value: function (value, ratio, id) {
-					    return value + '%<br/> ' + graphPeaOcupacion.values[id].toFixed(0);
+					    return numberFormat(value, 2) + ' %<br/> ' + numberFormat(graphPeaOcupacion.values[id], 0);
 		            }
 		        }
 		    }
@@ -845,7 +846,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2010: ' + title[d]; 
 		            },
 					value: function (value, ratio, id) {
-					    return ((value * 100) / graphPeaDistribucion.total).toFixed(1) + '%<br/> ' + (value * 1000000).toFixed(0);
+					    return numberFormat((value * 100) / graphPeaDistribucion.total, 2) + ' %<br/> ' + numberFormat(value * 1000000, 0);
 		            }		            
 		        }
     		},
@@ -895,7 +896,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 		            	return '2005: Cantidad tipo de produccion';
 		            },
 					value: function (value, ratio, id) {
-					    return (value * 1000000).toFixed(0);
+					    return numberFormat(value * 1000000, 0);
 		            }
 		        }
 		    }
@@ -957,7 +958,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 						return "2005: " + m
 					},
 					value: function (value, ratio, id) {
-					    return value + '<br/>' + (value * 100 / graphPbgBienes.total).toFixed(2) + '%';
+					    return numberFormat(value, 0) + '<br/>' + numberFormat(value * 100 / graphPbgBienes.total, 2) + ' %';
 		            }
 		        }
 		    },
@@ -1026,7 +1027,7 @@ var graphpbgTipo, graphPbgBienes, graphpbgServicios
 						return "2005: " + m
 					},
 					value: function (value, ratio, id) {
-					    return value + '<br/>' + (value * 100 / graphpbgServicios.total).toFixed(2) + '%';
+					    return numberFormat(value, 0) + '<br/>' + numberFormat(value * 100 / graphpbgServicios.total, 2) + ' %';
 		            }
 		        }
 		    },
