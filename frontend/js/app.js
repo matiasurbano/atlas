@@ -71,7 +71,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 
 	getTabSelected = function() {
-		//return $('.nav-tabs .active').text().trim();
 		return $('#myTab .active').attr('name');
 	}
 
@@ -163,16 +162,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	// get color depending on population density value
 	function getColor(d) {
-		/*
-		return d > 1000 ? '#800026' :
-		       d > 500  ? '#BD0026' :
-		       d > 200  ? '#E31A1C' :
-		       d > 100  ? '#FC4E2A' :
-		       d > 50   ? '#FD8D3C' :
-		       d > 20   ? '#FEB24C' :
-		       d > 10   ? '#FED976' :
-		                  '#FFEDA0';
-		                  */
 		var area = getAreaSelected();
 		return area === 'Partidos'  ? '#800026' :
 		       area === 'Zonas' 	? '#BD0026' :
@@ -243,16 +232,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	// setea los evntos sobre el mapa
 	function onEachFeatureA(feature, layer) {
-/*
-		var dataSelected = getDataSelected(feature.properties);
-		var htmlData = "";
-
-		_.forEach(dataSelected, function(data){
-			htmlData += data.name + ": <b>" + data.value + "</b><br/>";
-		});
-*/
-
-//		var tabSelected = getTabSelected();
 		var htmlProps = getHtmlProperties(feature.properties);
 		var title = (feature.properties['type'] === "partido" ? "Partido " : "");
 
@@ -275,14 +254,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 			click: zoomToFeature
 		});
 	}
-
-	// crea el mapa con estilo y eventos
-/*	geojson = L.geoJson(statesData, {
-		style: style,
-		onEachFeature: onEachFeature
-	}).addTo(map);
-*/
-	// map.attributionControl.addAttribution('Population data &copy; <a href="http://census.gov/">US Census Bureau</a>');
 
 	// agrega cuadro de escala de colores
 	var legend = L.control({position: 'bottomright'});
@@ -346,8 +317,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		var a = _.clone(infoAreas);
 		var b = _.clone(infoBarrios);
 
-		//info.features = _.prototype.concat(infoAreas.features, infoBarrios.features);
-
 		if (geojsonA !== undefined)
 			map.removeLayer(geojsonA);
 
@@ -371,33 +340,18 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	function areasHtml(list, name) {
 		var name_field = name || "name";
-/*
-		var html = "<div class='checkbox'>" +
-					"	<label><input id='area_todos' type='checkbox' value='Todos' checked onclick='areasDisabled("+ '"todos"' +");'>Todos</label>" +
-					"</div>";
 
-		html += "<div class='checkbox'>" +
-							"	<label><input id='area_ninguno' type='checkbox' value='Ninguno' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
-							"</div>";
-*/
-
-		var html = "<div class='checkbox'>" +
-					"	<a href='javascript:;' onclick='areasDisabled(" + '"todos"' + ");'>Todos</a>" +
-					"</div>";
-
-		html += "<div class='checkbox'>" +
-					"	<a href='javascript:;' onclick='areasDisabled(" + '"ninguno"' + ");'>Ninguno</a>" +
-					"</div>";
+		html = "<div class='checkbox'>" +
+				"	<label><input id='area_todos' type='checkbox' value='Todos' checked onclick='areasDisabled(" + '"todos"' + ");'>Seleccionar todo</label>" +
+				"</div>";
 
 
-		//list = _.map(_.sort	ByOrder(list, ['properties.name'], ['asc']), _.values);
 		list = _.map(list, _.values);
 
 		for (var i = 0; i < list.length; i++) {
 			html +=	"<div class='checkbox'>" +
 					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
 					"</div>";
-//					"	<label><input id='area_" + list[i][1].id + "' type='checkbox' value='" + list[i][1].id + "' checked disabled onclick='setAreas();'>" + list[i][1][name_field] + "</label>" +
 		}
 
 		return html;
@@ -406,6 +360,8 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 	function setAreas() {
 		var items = [];
 		var allAreas = getAreasSelected().features;
+
+
 
 		// obtengo el array de ids seleccionados
 		for (var i = 0; i < allAreas.length; i++) {
@@ -418,8 +374,17 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		infoAreas.features = _.filter(allAreas, function(item){
 								  return _.findIndex(items, function(x) {return x === item.properties.id}) !== - 1;
 								});
+
 		// seteo las areas en el mapa
 		drawMap();
+
+		if (items.length === 0)
+			$('#area_todos').prop("indeterminate", false).prop('checked', false);
+		else if (items.length === allAreas.length)
+			$('#area_todos').prop("indeterminate", false).prop('checked', true);
+		else
+			$('#area_todos').prop("indeterminate", true);
+
 
 		EventBus.publish('AREA_CHANGE',{
 			tipo: $("#cbo_areas")[0].value,
@@ -432,21 +397,11 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		var todosCheck = false;
 		var ningunoCheck = false;
 
-/*		if(option === 'todos')
-			$('#area_ninguno')[0].checked = false;
-		else if(option === 'ninguno')
-			$('#area_todos')[0].checked = false;
-*/
-//		todosCheck = $('#area_todos')[0].checked;
-//		ningunoCheck = $('#area_ninguno')[0].checked;
-
-		todosCheck = option === 'todos';
-		ningunoCheck = option === 'ninguno';
+		todosCheck = $('#area_todos')[0].checked;
+		ningunoCheck = !(todosCheck);
 
 		for (var i = 0; i < allAreas.length; i++) {
 			// no se porque carajo me lo toma como un array de controles...
-			//$('#area_' + allAreas[i].properties.id)[0].disabled = (todosCheck || ningunoCheck);
-
 			if (todosCheck)
 				$('#area_' + allAreas[i].properties.id)[0].checked = true;
 			else if (ningunoCheck)
@@ -469,19 +424,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	}
 
-/*	function setBarriosSelect() {
-		// no se porque carajo retorna un array
-		//console.log($("#cbo_areas")[0].value);
-
-		// seteo el geoJson
-		infoBarrios = _.clone(barrios);
-
-		$("#lst_barrios").html(barriosHtml(infoBarrios.features, "barrio"));
-
-		// dibujo el mapa
-		//drawAreas(infoAreas, infoBarrios);
-	}
-*/
 	function setBarriosSelect() {
 		// no se porque carajo retorna un array
 		//console.log($("#cbo_areas")[0].value);
@@ -491,8 +433,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 		$("#lst_barrios").html(barriosHtml(infoAreas.features, infoBarrios.features, "barrio"));
 
-		// dibujo el mapa
-		//drawAreas(infoAreas, infoBarrios);
 	}
 
 
@@ -500,59 +440,53 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		var name_field = name || "name";
 		var barrioList = [];
 		var areaCodigo = "";
+		var areasBarrios = getAreaBarrios(areaList);
 
-		var html = "<div class='checkbox'>" +
-					"	<a href='javascript:;' onclick='barriosDisabled(" + '"todos"' + ");'>Todos</a>" +
+		html = "<div class='checkbox' >" +
+				"	<label><input id='barrio_todos' type='checkbox' value='Todos' checked onclick='barriosDisabled(" + '"todos"' + ");'>Seleccionar todo</label>" +
+				"</div>";
+
+		for (var i = 0; i < areasBarrios.length; i++) {
+
+			barrioList = getBarriosArea(barrios.features, areasBarrios[i]);
+
+			areaCodigo = areasBarrios[i].properties.codigo;
+
+			html +=	"<div class='checkbox'>" +
+					"	<label >" +
+					"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areasBarrios[i].properties.id + "' checked onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
+							areasBarrios[i].properties.name + 
+					"	</label>" +
+					"	<a class='btn-expand' id='lnk-areabarrio-" + areaCodigo + "-down' onclick='barriosVisible(" + '"' + areaCodigo + '", "down"' + ")' href='#'>" +
+					"   	<span class='glyphicon glyphicon-menu-down' aria-hidden='true'></span>" +
+					"	</a>" +
+					"	<a class='btn-contract' id='lnk-areabarrio-" + areaCodigo + "-up' onclick='barriosVisible(" + '"' + areaCodigo + '", "up"' + ")' href='#'>" +
+					"   	<span class='glyphicon glyphicon-menu-up' aria-hidden='true'></span>" +
+					"	</a>" +
 					"</div>";
-	//				"	<label><input id='barrio_todos' type='checkbox' value='Todos' checked onclick='barriosDisabled(" + '"todos"' + ");'>Todos</label>" +
 
-		html += "<div class='checkbox'>" +
-					"	<a href='javascript:;' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</a>" +
-					"</div>";
-	//				"	<label><input id='barrio_ninguno' type='checkbox' value='Ninguno' onclick='barriosDisabled(" + '"ninguno"' + ");'>Ninguno</label>" +
+			html += "<div id='div-areabarrio-" + areaCodigo + "' class='sub-check'>"
 
-		for (var i = 0; i < areaList.length; i++) {
-//			barrioList = getBarriosArea(list, areaList[i]);
-
-//			if (barrioList.length > 0) {
-
-			if (areaList[i].properties.contieneBarrios) {
-				barrioList = getBarriosArea(list, areaList[i]);
-
-				areaCodigo = areaList[i].properties.codigo;
-
+			for (var j = 0; j < barrioList.length; j++) {
 				html +=	"<div class='checkbox'>" +
-						"	<label >" +
-						"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areaList[i].properties.id + "' checked onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
-								areaList[i].properties.name + 
-						"	</label>" +
-						"	<a class='btn-expand' id='lnk-areabarrio-" + areaCodigo + "-down' onclick='barriosVisible(" + '"' + areaCodigo + '", "down"' + ")' href='#'>" +
-						"   	<span class='glyphicon glyphicon-menu-down' aria-hidden='true'></span>" +
-						"	</a>" +
-						"	<a class='btn-contract' id='lnk-areabarrio-" + areaCodigo + "-up' onclick='barriosVisible(" + '"' + areaCodigo + '", "up"' + ")' href='#'>" +
-						"   	<span class='glyphicon glyphicon-menu-up' aria-hidden='true'></span>" +
-						"	</a>" +
+						"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked onclick='setBarrios(" + '"' + areaCodigo + '"' + ");'>" + barrioList[j].properties[name_field] + "</label>" +
 						"</div>";
 
-//						"		<input id='chk-areabarrio-" + areaCodigo + "' type='checkbox' value='" + areaList[i].properties.id + "' checked disabled onclick='setAreaBarrios(" + '"' + areaCodigo + '"' + ");'>" + 
+						//"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked disabled onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
 
-				html += "<div id='div-areabarrio-" + areaCodigo + "' class='sub-check'>"
-
-				for (var j = 0; j < barrioList.length; j++) {
-					html +=	"<div class='checkbox'>" +
-							"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
-							"</div>";
-
-							//"	<label><input id='chk-barrio-" + barrioList[j].properties.codigo + "' type='checkbox' value='" + barrioList[j].properties.id + "' checked disabled onclick='setBarrios();'>" + barrioList[j].properties[name_field] + "</label>" +
-
-				}
-
-				html += "</div>";	// cierra el divArea_???
 			}
+
+			html += "</div>";	// cierra el divArea_???
 		}
 
 
 		return html;
+	}
+
+	function getAreaBarrios(list) {
+		return _.filter(list, function(area) {
+							return area.properties.contieneBarrios;
+						})
 	}
 
 	function barriosVisible(areaCodigo, op) {
@@ -568,10 +502,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 			objLnkUp.style.display = 'none';
 			objLnkDown.style.display = 'block';
 		}
-
-		//alert(areaCodigo + "-" + op);
-
-		// span 
 	}
 
 	function getBarriosArea(barrios, area) {
@@ -605,17 +535,9 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		var areaId = "";
 
 		// click Todos => uncheck Ninguno
-		/*
-		if (option === 'todos')
-			$('#barrio_ninguno')[0].checked = false;
-		else if(option === 'ninguno')
-			$('#barrio_todos')[0].checked = false;
-
 		todosCheck = $('#barrio_todos')[0].checked;
-		ningunoCheck = $('#barrio_ninguno')[0].checked;
-		*/
-		todosCheck = (option === 'todos');
-		ningunoCheck = (option !== 'todos');
+		ningunoCheck = !(todosCheck);
+
 
 		for (var i = 0; i < allAreas.length; i++) {
 			if (allAreas[i].properties["contieneBarrios"]) {
@@ -656,7 +578,7 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 	}
 
-	function setBarrios() {
+	function setBarrios(areaCodigo) {
 		var items = [];
 		var allBarrios = _.clone(barrios.features);
 
@@ -670,6 +592,13 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		infoBarrios.features = _.filter(allBarrios, function(item){
 								  return _.findIndex(items, function(x) {return x === item.properties.codigo}) !== - 1;
 								});
+
+		// modifico el check de Area "Seleccione todo"
+		setAreaBarriosCheck(areaCodigo);
+
+		// modifico el check de "Seleccione todo"
+		setAreasCheck(getAreaBarrios(infoAreas.features));
+
 
 		// seteo las areas en el mapa
 		drawMap();
@@ -698,12 +627,56 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 			}
 
 			// redibujo el mapa
-			setBarrios();
+			setBarrios(areaCodigo);
+
+			// modifico el check de "Seleccione todo"
+			setAreasCheck(getAreaBarrios(infoAreas.features));
 		}
 
-		// seteo las areas en el mapa
-		//drawMap();
 	}
+
+	function setAreasCheck(list) {
+		var cant = 0;
+
+		for (var i = 0; i < list.length; i++) {
+			if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked && !$('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
+				cant++;
+		}
+
+		if (cant === 0)
+			$('#barrio_todos').prop("indeterminate", false).prop('checked', false);
+		else if (cant === list.length)
+			$('#barrio_todos').prop("indeterminate", false).prop('checked', true);
+		else
+			$('#barrio_todos').prop("indeterminate", true);
+
+	}
+
+
+	function setAreaBarriosCheck(areaCodigo) {
+		var cant = 0;
+		var list = getBarriosArea(barrios.features, getArea(areaCodigo));
+
+		for (var i = 0; i < list.length; i++) {
+			if ($('#chk-barrio-' + list[i].properties.codigo)[0].checked)
+				cant++;
+		}
+
+		if (cant === 0)
+			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", false).prop('checked', false);
+		else if (cant === list.length)
+			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", false).prop('checked', true);
+		else
+			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", true);
+
+	}
+
+	function getArea(areaCodigo) {
+  		return _.filter(infoAreas.features, function(area) {
+			return area.properties.codigo === areaCodigo;
+		})[0];
+	}
+
 
 	function numberFormat(value, n, x) {
 	    var re = '\\d(?=(\\d{' + (x || 3) + '})+' + (n > 0 ? '\\.' : '$') + ')';
@@ -714,8 +687,6 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		setAreasSelect();
         setBarriosSelect();
 
-        //setData();
-
         drawMap();
 
  		initGraphics();
@@ -723,23 +694,8 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 
 		EventBus.subscribe('AREA_CHANGE', function(data){
 			//console.log('AREA_CHANGE',data);
-
 			setDataGraph(infoAreas);
 
-			//	setBarriosSelect();
-
-/*
-			if (data.tipo == "Cordones"){
-
-				var filteredPartidos = _.chain(partidos).filter(function(p){
-					return p.cordon = 1;
-				});
-				console.log(filteredPartidos);
-			}
-*/
-			// TAB - Poblacion
-
-			// TAB - Vivienda
 		});
 
 
