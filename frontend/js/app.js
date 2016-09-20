@@ -639,7 +639,7 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		var cant = 0;
 
 		for (var i = 0; i < list.length; i++) {
-			if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked && !$('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
+			if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked || $('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
 				cant++;
 		}
 
