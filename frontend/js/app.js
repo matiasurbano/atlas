@@ -547,9 +547,11 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 				$(areaId)[0].disabled = false;
 
 				if (todosCheck)
-					$(areaId)[0].checked = true;
+					$(areaId).prop("indeterminate", false).prop('checked', true);
+			//		$(areaId)[0].checked = true;
 				else if (ningunoCheck)
-					$(areaId)[0].checked = false;
+					$(areaId).prop("indeterminate", false).prop('checked', false);
+//					$(areaId)[0].checked = false;
 
 			}
 		}
@@ -636,16 +638,21 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 	}
 
 	function setAreasCheck(list) {
-		var cant = 0;
+		var checked = 0;
+		var indeterminated = 0;
 
 		for (var i = 0; i < list.length; i++) {
-			if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked || $('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
-				cant++;
+			//if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked && !$('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
+			if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].checked)
+				checked++;
+//			else if (!$('#chk-areabarrio-' + list[i].properties.codigo)[0].checked && $('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
+			else if ($('#chk-areabarrio-' + list[i].properties.codigo)[0].indeterminate)
+				indeterminated++;
 		}
 
-		if (cant === 0)
+		if ((checked + indeterminated) === 0) 
 			$('#barrio_todos').prop("indeterminate", false).prop('checked', false);
-		else if (cant === list.length)
+		else if (checked === list.length)
 			$('#barrio_todos').prop("indeterminate", false).prop('checked', true);
 		else
 			$('#barrio_todos').prop("indeterminate", true);
@@ -667,7 +674,7 @@ var map = L.map('map').setView([-34.65, -58.8], 9);
 		else if (cant === list.length)
 			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", false).prop('checked', true);
 		else
-			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", true);
+			$('#chk-areabarrio-' + areaCodigo).prop("indeterminate", true).prop('checked', false);
 
 	}
 
